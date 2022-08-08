@@ -1,0 +1,62 @@
+body{
+    background-color: #f4f4f4;
+   /* background-color: #0f1421;*/
+}
+
+.headlineq{
+    background-color:royalblue;
+}
+
+
+.normalbg{
+    background-color: #f4f4f4;
+}
+
+.card_primary{
+    color: #0d6efd;
+}
+.card_text{
+    color: #495050;
+}
+
+
+/*bootstrap5美化*/
+.form-select:focus,.page-link:focus,.btn:focus,.navbar-toggler:focus{
+    box-shadow:none!important;
+    }
+
+    
+.accordion-button:focus,.accordion-button:not(.collapse){
+        border-color: white;
+        background-color: white;
+        box-shadow:none !important;
+    }
+
+.accordion-button:focus,.accordion-button:not(.collapse){
+        border-color: white;
+        background-color: white;
+        box-shadow:none !important;
+    }
+
+    /*卡片美化*/
+.card,.card-header,.card-body,.card-footer{
+        background-color: white;
+    }
+    
+
+.dropdown-item:active{
+    background-color: #e9ecef;
+    color: #1e2125;
+}
+
+.form-check-input:focus{
+    /*outline: none!important;*/
+    box-shadow: none!important;
+}
+
+.normalText{
+    color: #495050;
+}
+.titlext{
+    color: #212529;;
+}

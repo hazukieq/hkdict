@@ -1,0 +1,121 @@
+
+body{
+    background-color: white;
+}
+
+/*bootstrap5美化*/
+.form-select:focus,.page-link:focus,.btn:focus,.navbar-toggler:focus{
+    box-shadow:none!important;
+    }
+
+    
+.accordion-button:focus,.accordion-button:not(.collapse){
+        border-color: white;
+        background-color: white;
+        box-shadow:none !important;
+    }
+
+.accordion-button:focus,.accordion-button:not(.collapse){
+        border-color: white;
+        background-color: white;
+        box-shadow:none !important;
+    }
+
+    /*卡片美化*/
+.card,.card-header,.card-body,.card-footer{
+        background-color: white;
+    }
+    
+
+.dropdown-item:active{
+    background-color: #e9ecef;
+    color: #1e2125;
+}
+
+.form-check-input:focus{
+    /*outline: none!important;*/
+    box-shadow: none!important;
+}
+
+
+  
+.wrapper{ padding:5% 10%; position:relative;}
+
+h6{
+    color: #212529;
+    font-weight: bold;
+}
+article{
+    padding:5% 8%; position:relative;
+}
+p{
+    margin: 0px;
+    margin-top: 1em;
+    margin-bottom: 2em;
+    letter-spacing: 1.2px;
+    text-align: justify;
+    padding: 0px;
+    line-height: 2em;
+    font-size: 16px;
+    color: #333333;
+}
+
+blockquote{
+    position: relative;
+    color: #999;
+    background-color: #fcfcfc;
+    padding: 5px 10px;
+    font-weight: 400;
+    text-align: justify;
+    line-height: 2em;
+    font-size: 15px;
+    border-left: 2px solid #1abc9c;
+    padding-left: 1em;
+
+}
+
+li{
+    line-height: 2em;
+    letter-spacing: 2px;
+    text-align: left;
+}
+ruby rt{
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #1abc9c;
+}
+
+/* 去掉各Table cell 的边距并让其边重合 */
+table {
+    /*table-layout: fixed;*/
+    empty-cells: show;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    color: #666;
+    font-size: 14px;
+    border:1px solid #cad9ea;
+  }
+
+  th{
+    background-color: #ededed;
+    color: #1abc9c;
+  }
+
+  tr:nth-of-type(odd){background-color: #ededed;}
+  tr:nth-of-type(even){background-color: white;}
+
+  td,th{
+    border: 1px solid #cad9ea;
+    padding: 0 1em 0;
+    word-break: normal;
+  }
+
+
+
+/* 在文章中应用 table 滚动基本格式 */
+.verticaline{
+    position: relative;
+    overflow-x: auto;
+    height: auto;
+}

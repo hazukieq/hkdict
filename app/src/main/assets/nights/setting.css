@@ -1,0 +1,16 @@
+.list-group,.list-group-item{
+    background-color: #212925;
+}
+
+.divbg{
+    background-color: #212925;
+
+}
+
+.bdline{
+    border-bottom: 1px solid #343a40;
+}
+
+.grayext{
+    color: gray;
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="theme_rootlayout_bg_color" format="color|reference"/>
+    <attr name="theme_headline_bg_color" format="color|reference"/>
+    <attr name="theme_text_color" format="color|reference"/>
+    <attr name="theme_headline_text_color" format="color|reference"/>
+    <attr name="theme_pager_bg_color" format="color|reference"/>
+    <attr name="theme_tab_drawable" format="color|reference"/>
+    <attr name="theme_recyclerview_bg_color" format="color|reference"/>
+    <attr name="theme_slidebar_bg_color" format="color|reference"/>
+    <attr name="theme_leftback_icon" format="color|reference"/>
+    <attr name="theme_topbar_bg" format="color|reference"/>
+    <attr name="theme_topbar_title_color" format="color|reference"/>
+    <attr name="theme_separator" format="color|reference"/>
+
+</resources>

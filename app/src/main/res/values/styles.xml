@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="NormalText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_gray</item>
+        <item name="android:lineSpacingExtra">6dp</item>
+    </style>
+
+    <style name="tabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="ListText">
+        <item name="android:textColor">@color/qmui_btn_blue_text</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="ListCancelText">
+        <item name="android:textColor">@color/text_red</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="QDTopBar" parent="QMUI.TopBar">
+        <item name="qmui_topbar_height">48dp</item>
+        <item name="qmui_topbar_image_btn_height">48dp</item>
+        <item name="qmui_topbar_title_bold">false</item>
+        <item name="qmui_topbar_text_btn_bold">true</item>
+        <item name="qmui_topbar_title_color">?attr/theme_topbar_title_color</item>
+        <item name="qmui_topbar_left_back_drawable_id">?attr/theme_leftback_icon</item>
+    </style>
+</resources>

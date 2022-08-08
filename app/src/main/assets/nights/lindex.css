@@ -1,0 +1,40 @@
+
+.asink{
+    color: #ffffff;
+}
+.aslink{
+    color: white;
+    background-color: #495050;
+    text-decoration: none;
+}
+.aslink:hover{
+    color: white;
+    text-decoration:none;
+}
+
+.acopy{
+    color: #DC3545;
+    text-decoration: none;
+}
+
+.acopy:hover{
+    color: #fc9598;
+    text-transform: none;
+}
+
+
+.accordion-item,.accordion-collapse{
+    border-color: #495050;
+    background-color: #495050;
+}
+.accordion-button:focus,.accordion-button:not(.collapse){
+    border-color:#495050;
+    background-color: #495050;
+    color: white;
+    box-shadow:none !important;
+}
+.accordion-body{
+background-color: #495050;
+color: #7a7d86;
+border-radius: 0 0 5px 5px ;
+}

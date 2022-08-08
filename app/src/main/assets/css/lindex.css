@@ -1,0 +1,20 @@
+
+.aslink{
+    color: #0d6efd;
+    background-color: #ffffff;
+    text-decoration: none;
+}
+.aslink:hover{
+    color: cornflowerblue;
+    text-decoration:none;
+}
+
+.acopy{
+    color: #DC3545;
+    text-decoration: none;
+}
+
+.acopy:hover{
+    color: #fc9598;
+    text-transform: none;
+}

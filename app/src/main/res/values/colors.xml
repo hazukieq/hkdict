@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!--颜色自定义-->
+    <color name="text_gray">#495050</color>
+    <color name="headerbar">#9999cc</color>
+    <color name="cs_white">#fefefe</color>
+    <color name="light_white">#ededed</color>
+    <color name="light">#f4f4f4</color>
+    <color name="status_color">#4169e1</color>
+    <color name="text_red">#cdf44336</color>
+    <color name="text_pink">#fff06292</color>
+    <color name="text_selected">#79B3E5</color>
+    <color name="class_red">#ffef9a9a</color>
+    <color name="class_yellow">#ffec8b</color>
+    <color name="class_green">#77b568</color>
+    <color name="class_purple">#ffce93d8</color>
+    <color name="class_white">#e4eceb</color>
+    <color name="class_pink">#ffcccc</color>
+    <color name="class_blue">#ff90caf9</color>
+    <color name="class_light_blue">#ffb3e5fc</color>
+    <color name="class_orange">#b99a61</color>
+    <color name="class_light_yellow">#ffffecb3</color>
+    <color name="class_light_purple">#ffd1c4e9</color>
+    <color name="class_btn_bg">#ddedff</color>
+    <color name="neogray_bg">#f4f4ff</color>
+    <color name="night_bg">#0f1421</color>
+</resources>

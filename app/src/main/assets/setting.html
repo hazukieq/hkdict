@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>首页</title>
+        <!-- Bootstrap CSS -->
+        <script src="dist/js/bootstrap.bundle.min.js"></script>
+        <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/setting.css" rel="stylesheet">
+        <link href="css/universal.css" rel="stylesheet">
+    </head>
+
+    <header>
+        <div class="container-fluid  fixed-top bg-white">
+            <div class="row p-4"></div>
+            <div class="row p-2  border-bottom justify-content-between align-content-center" >
+                <div class="col-3" onclick="back2last()">
+                    <a class="text-danger p-0 m-0 btn float-start" style="font-size: 16px;">返回</a>
+                </div>
+                <div class="col-6 text-black-75 position-relative" style="font-size: 18px;"><div class="position-absolute top-50 start-50 translate-middle">应用设置</div></div>
+                <div class="col-3">
+                    <a class="text-primary p-0 m-0 btn float-end" style="font-size: 16px;">&nbsp;</a>
+                </div>
+            </div>
+        </div>
+        
+    </header>
+    <body>
+        <div class="container-fluid mt-5 pt-5">
+            <div class="row">
+                <div class="col">
+                    <div class="m-2" style="font-size: 12px;color: gray;font-weight: bold;letter-spacing: 1.5px;">主界面</div>
+                    <div class="list-group-flush rounded-2  mb-3" style="letter-spacing: 1.2px;">
+                        <!--li class="list-group-item">
+                            <div class="d-flex align-content-start justify-content-between">
+                                普通话转换预览模式
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="pin_switch" onclick="setSwic('pin_switch',0)">
+                                </div>
+                            </div>
+                            <div class="mt-3" style="color: gray;font-size: 14px">您开启后，在搜索框输入普通话拼音后，可以实时看到带有声调的拼音显示；如，输入&nbsp;zhong1，您将会在搜索框下看到<span class="text-primary fw-bold">&nbsp;zhōng</span>
+                            </div>
+                        </li-->
+                        <li class="list-group-item">搜索模式
+                            <div class="form-check form-switch mt-2">
+                            <label class="form-check-label" for="offline"><small class="text-black-50">启用离线模式</small></label>
+                            <input class="form-check-input" type="checkbox" id="offline_switch" onclick="setSwic('offline_switch',0)">
+                            </div>
+                            <div class="mt-3 text-black-50" style="font-size: 14px">启用离线模式后，应用将使用本地数据库查询，查询结果仅包含普通话、说文、康熙、汉语字典、1926年嘉应客语等基本信息。</div>
+                        </li>
+                        <li class="list-group-item">页面切换
+                            <div class="form-check form-switch mt-2">
+                                <label class="form-check-label" for="isCan"><small class="text-black-50">左右滑动</small></label>
+                                <input class="form-check-input" type="checkbox" id="tab_switch" onclick="setSwic('tab_switch',1)">
+                                </div>
+                        </li>
+                    </div>
+                </div>
+            </div>
+            
+            <!--详情界面设置-->
+            <div class="row">
+                <div class="col">
+                    <div class="m-2" style="font-size: 12px;color: gray;font-weight: bold;letter-spacing: 1.5px;">详情界面</div>
+                    <div class="list-group-flush rounded-2  mb-4" style="letter-spacing: 1.2px;">
+                        <li class="list-group-item d-flex text-black-75 justify-content-between align-content-start" onclick="loadStoredValues('item_hk','hk',0)" id="hk">客家话读音显示<img src="dist/img/chevright.svg" id="hkimg"></li>
+                        <div class="visually-hidden border-bottom pb-2 bg-white" id="item_hk" expanded="false"></div>
+
+                        <li class="list-group-item text-black-75 d-flex justify-content-between align-content-start border-0 rounded-bottom" onclick="loadStoredValues('item_cmn','cmn',1)" id="cmn">普通话读音显示<img src="dist/img/chevright.svg" id="cmnimg"></li>
+                        <div class="visually-hidden pb-2 rounded-bottom bg-white" id="item_cmn" expanded="false"></div>
+                    </div>
+
+                    
+                    <div class="list-group-flush rounded-2  mb-3" style="letter-spacing: 1.2px;">
+                        <li class="list-group-item text-black-75 d-flex justify-content-between align-content-start" onclick="loadBigStoredValues('item_sw','sw')" id="sw">说文解字卡片<img src="dist/img/chevright.svg" id="swimg"></li>
+                        <div class="visually-hidden border-bottom pb-2 bg-white" id="item_sw" expanded="false"></div>
+                        
+                        <li class="list-group-item text-black-75 d-flex justify-content-between align-content-start" onclick="loadBigStoredValues('item_kx','kx')" id="kx">康熙字典卡片<img src="dist/img/chevright.svg" id="kximg"></li>
+                        <div class="visually-hidden border-bottom pb-2 bg-white" id="item_kx" expanded="false"></div>
+
+                        <li class="list-group-item text-black-75 d-flex justify-content-between align-content-start" onclick="loadBigStoredValues('item_hd','hd')" id="hd">汉语大字典卡片<img src="dist/img/chevright.svg" id="hdimg"></li>
+                        <div class="visually-hidden border-bottom pb-2 bg-white" id="item_hd" expanded="false"></div>
+
+                        <li class="list-group-item text-black-75 d-flex justify-content-between align-content-start border-0 rounded-bottom" onclick="loadBigStoredValues('item_ltc','ltc')" id="ltc">切韵字典卡片<img src="dist/img/chevright.svg" id="ltcimg"></li>
+                        <div class="visually-hidden border-0 pb-2 rounded-bottom bg-white" id="item_ltc" expanded="false"></div>
+                    </div>
+
+                </div>
+            </div>
+            <!--详情界面终止区-->
+
+            <!--其他设置-->
+            <!--div class="row">
+                <div class="col">
+                    <div class="m-2" style="font-size: 12px;color: gray;font-weight: bold;letter-spacing: 1.5px;">其他</div>
+                    <div class="list-group-flush rounded-2  mb-4" style="letter-spacing: 1.2px;">
+                        <li class="list-group-item ">试验功能
+                            <div class="form-check form-switch mt-2">
+                                <label class="form-check-label" for="night_switch">夜间模式</label>
+                                <input class="form-check-input" type="checkbox" id="night_switch" onclick="setSwic('night_switch',2)">
+                            </div>
+                            <div class="mt-3 text-black-50" style="font-size: 14px">
+                                <span class="badge bg-warning">注意</span>&nbsp;该模式下将会重置卡片背景色，且不允许修改卡片背景颜色！
+                            </div>
+                        </li>
+                    </div>
+                </div>
+            </div-->
+            <!--其他设置界面终止区-->
+
+        </div>
+        <script src="js/universal.js"></script>
+        <script src="js/setting.js"></script>
+    </body>
+</html>

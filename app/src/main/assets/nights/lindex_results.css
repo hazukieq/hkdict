@@ -1,0 +1,141 @@
+
+body{
+    background-color: #f4f4f4;
+}
+
+/*bootstrap5 美化*/
+.list-group,.list-group-item{
+    background-color: #212529;
+
+}
+
+.graybg{
+    background-color: gray;
+}
+
+.accordion-item,.accordion-collapse{
+    border-color: #212529;
+    background-color: #212529;
+}
+.accordion-button:focus,.accordion-button:not(.collapse){
+    border-color:#495050;
+    background-color: #495050;
+    color: white;
+    box-shadow:none !important;
+}
+.accordion-body{
+background-color: #212529;
+color: #7a7d86;
+border-radius: 0 0 5px 5px ;
+}
+
+
+.aslin:hover,.aslin:active{
+        color: #0d6efd;
+        background-color: #e9ecef;
+    }
+    .scrollsby-list{
+        position: relative;
+        height: 500px;
+        margin-top: .5rem;
+        overflow: auto;
+    }
+
+    .aslin{
+        text-decoration: none;
+        color: #0d6efd;
+        background-color: #212529;
+    }
+    .aslin:hover{
+        text-decoration: none;
+        color: #0d6efd;
+        background-color: #495050;
+    }
+
+    .verticaline{
+        position: relative;
+        overflow-x: auto;
+        height: 500px;
+    }
+    .vertext{
+        writing-mode: vertical-rl;
+        -ms-writing-mode: tb-rl;
+        color: #7a7d86;
+    }
+    .vertext small{
+        color: #90939a;
+    }
+
+    .fixedpo{
+        position: fixed;
+    }
+
+/*说文解字卡片的字体、间距、行距、段距、排列方向、背景颜色*/
+    .swfont-lg{
+        font-size: 18px;
+    }
+
+    .swfont-md{
+        font-size: 16px;
+    }
+
+    .swfont-sm{
+        font-size: 14px;
+    }
+
+    .swfont-lg small{
+        font-size: 15px;
+    }
+
+    .swfont-md small{
+        font-size: 13px;
+    }
+
+    .swfont-sm small{
+        font-size: 11px;
+    }
+
+/*通用字体大小*/
+    .unifont-lg{
+        font-size: 17px;
+    }
+
+    .unifont-md{
+        font-size: 15px;
+    }
+
+    .unifont-sm{
+        font-size: 12px;
+    }
+
+
+    /*文字间距*/
+    .letters-lg,.letters-lg small{
+        letter-spacing: 3px;
+    }
+
+    .letters-md,.letters-md small{
+        letter-spacing: 1.5px;
+    }
+
+    .letters-sm,.letters-sm small{
+        letter-spacing: 1px;
+    }
+
+    /*背景颜色*/
+    .bgcolor-yellow {
+          background-color: rgb(248, 224, 176);
+    }
+
+    .bgcolor-white{
+        background-color: white;
+    }
+
+    .bgcolor-gray{
+        background-color: #212529;
+    }
+
+
+
+
+

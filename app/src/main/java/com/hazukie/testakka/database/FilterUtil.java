@@ -16,37 +16,11 @@ import java.util.regex.Pattern;
 
 public class FilterUtil {
 
-   /* public static List<String> filterHKPins(String target, List<?> datas){
-        List<String> hans=new ArrayList<>();
-        for(int q=0;q<datas.size();q++){
-            Hkhan_model hk=(Hkhan_model) datas.get(q);
-            String[] jetd_pins=hk.jetd_gajin_hk.split(",");
-            String pattern="^"+target+"(\\d)?$";
-            Pattern p=Pattern.compile(pattern);
-
-            for(int g=0;g<jetd_pins.length;g++){
-                String jetd=jetd_pins[g];
-                Matcher matcher=p.matcher(jetd);
-                if(matcher.find()){
-                    Log.i("find",hk.hz);
-                    hans.add(hk.hz);
-                    break;
-                }else{
-                    continue;
-                }
-            }
-
-        }
-        return hans;
-    }*/
-
     public static List<Pins> filterCmnPins(String target, Map<String,String> datas){
         String pattern="";
         char c=target.charAt(target.length()-1);
-        if(Character.isDigit(c)){
-            pattern="^"+target+"$";
-            Log.i("filrerCmnpins","pattern>>"+pattern);
-        }else {pattern="^"+target+"(\\d)?$";}
+        if(Character.isDigit(c)) pattern="^"+target+"$";
+        else pattern="^"+target+"(\\d)?$";
 
         Map<String,List<String>> hans=new HashMap<>();
         for(String hanzKey:datas.keySet()){
@@ -62,8 +36,6 @@ public class FilterUtil {
                 }
             }
         }
-
-        Log.i("filterPins>>",hans.keySet().toString()+":"+hans.values().toString());
 
         List<Pins> returnPins=new ArrayList<>();
         for(String obj:hans.keySet()){

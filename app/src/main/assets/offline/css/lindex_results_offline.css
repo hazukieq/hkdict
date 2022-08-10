@@ -3,33 +3,6 @@ body{
     background-color: #f4f4f4;
 }
 
-/*bootstrap5 美化*/
-.list-group,.list-group-item{
-    background-color: #212529;
-
-}
-
-.graybg{
-    background-color: gray;
-}
-
-.accordion-item,.accordion-collapse{
-    border-color: #212529;
-    background-color: #212529;
-}
-.accordion-button:focus,.accordion-button:not(.collapse){
-    border-color:#495050;
-    background-color: #495050;
-    color: white;
-    box-shadow:none !important;
-}
-.accordion-body{
-background-color: #212529;
-color: #7a7d86;
-border-radius: 0 0 5px 5px ;
-}
-
-
 .aslin:hover,.aslin:active{
         color: #0d6efd;
         background-color: #e9ecef;
@@ -37,6 +10,7 @@ border-radius: 0 0 5px 5px ;
     .scrollsby-list{
         position: relative;
         height: 500px;
+        width: auto;
         margin-top: .5rem;
         overflow: auto;
     }
@@ -44,12 +18,12 @@ border-radius: 0 0 5px 5px ;
     .aslin{
         text-decoration: none;
         color: #0d6efd;
-        background-color: #212529;
+        background-color: #ffffff;
     }
     .aslin:hover{
         text-decoration: none;
         color: #0d6efd;
-        background-color: #495050;
+        background-color: #f4f4f4;
     }
 
     .verticaline{
@@ -60,10 +34,10 @@ border-radius: 0 0 5px 5px ;
     .vertext{
         writing-mode: vertical-rl;
         -ms-writing-mode: tb-rl;
-        color: #7a7d86;
+        color: #212529;
     }
     .vertext small{
-        color: #90939a;
+        color: #495057;
     }
 
     .fixedpo{
@@ -132,7 +106,7 @@ border-radius: 0 0 5px 5px ;
     }
 
     .bgcolor-gray{
-        background-color: #212529;
+        background-color: #e9ecef;
     }
 
 

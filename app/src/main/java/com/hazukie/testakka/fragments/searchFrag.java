@@ -7,6 +7,7 @@ import android.content.Context;
 import androidx.fragment.app.Fragment;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
+import android.content.Intent;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 
@@ -18,6 +19,7 @@ import com.google.gson.Gson;
 import com.hazukie.testakka.Fileutils.FileUtil;
 import com.hazukie.testakka.activities.HanzdetailActivity;
 import com.hazukie.testakka.activities.MainActivity;
+import com.hazukie.testakka.activities.SettingActivity;
 import com.hazukie.testakka.base.CnWebView;
 import com.hazukie.testakka.base.UniversalWebView;
 import com.hazukie.testakka.database.DatabaseObserver;
@@ -49,8 +51,10 @@ import java.util.regex.Pattern;
  * create an instance of this fragment.
  */
 public class searchFrag extends UniversalWebView {
-    private static String host_url="http://dict.hazukieq.top/lindex.html";
-    private static String local_url="hkapp://";
+    private static String host_url="http://dict.hazukieq.top/searchapis/returnhz";
+    private static String local_url="hkapp://search_/";
+    private static String local_reload="hkapp://reload_/";
+    private static String offline_url="hkoffline://search_/?s=";
     private List<Hkhan_model> alls=new ArrayList<>();
 
 
@@ -113,7 +117,7 @@ public class searchFrag extends UniversalWebView {
             public void OfAjax(String url){
                 Gson gson=new Gson();
                 Hkdatabase hkdatabase= Hkdatabase.getInstance(getActivity());
-                Log.i("url-->",url);
+
                 if(url.startsWith("hkoffline/search_hz_")){
                     String[] urlq=url.replace("hkoffline/search_hz_","").split(",");
                     String anz=urlq[0];
@@ -121,7 +125,6 @@ public class searchFrag extends UniversalWebView {
                     new QueryHanzTask(hkdatabase, new DatabaseObserver() {
                         @Override
                         public void callbackOfMsg(List<Hkhan_model> datas) {
-                            Log.i("datas------>",datas.get(0).hz);
                             if(datas.size()==0){
                                 datas.add(0,new Hkhan_model(0,"...","","","","","",""));
                             }
@@ -137,21 +140,18 @@ public class searchFrag extends UniversalWebView {
                         }
                     }, anz).execute();
 
-                }else if(url.startsWith("hkoffline/search_pin_")){
+                }
+
+                else{
                     String[] urlq=url.replace("hkoffline/search_pin_","").split(",");
                     String anz=urlq[0];
                     if(urlq[0].equals("kull")|urlq[0].contains(" ")) anz="li";
                     int QUERY_MODE=0;
                     if(urlq[1].equals("cmnp"))QUERY_MODE=1;
-                    Log.i("onRaw_QUERY_MODE>>",""+QUERY_MODE);
+                    //Log.i("onRaw_QUERY_MODE>>",""+QUERY_MODE);
                     new QueryPinTask(hkdatabase, anz,QUERY_MODE, new DatabasePinObserver() {
                         @Override
                         public void callOfMsg(String searchValue,Map<String, String> maps) {
-                            StringBuilder builder=new StringBuilder();
-                            for(String hken:maps.keySet()){
-                                builder.append(hken+":"+maps.get(hken)+", ");
-                            }
-                            Log.i("runOnrawQuery>>",builder.toString());
 
                             List<Pins> cmnPins=FilterUtil.filterCmnPins(searchValue,maps);
                             Log.i("onRaw_cmnPins>>",""+cmnPins.size());
@@ -171,6 +171,10 @@ public class searchFrag extends UniversalWebView {
 
             }
 
+            @JavascriptInterface
+            public void openSetting(){
+                SettingActivity.startActivityWithLoadUrl(getActivity(),SettingActivity.class,"file:///android_asset/setting.html","应用设置","");
+            }
         }
 
     @Override
@@ -185,20 +189,28 @@ public class searchFrag extends UniversalWebView {
                     e.printStackTrace();
                 }
 
-                SpvalueStorage.getInstance(getActivity());
+                //SpvalueStorage.getInstance(getActivity());
                 //这里对APP本地url进行拦截，并通过修改原始数据并重新生成url链接来向服务器发送请求；规定协议为hkapp://;
-                 if(url.startsWith(local_url+"search_/")){
-                    String sid=url.replace(local_url+"search_/",host_url);//+"lindex.html");
+                 if(url.startsWith(local_url)){
+                    String sid=url.replace(local_url,host_url);//+"lindex.html");
                     String Localurl="file:///android_asset/lindex_results.html";
 
-                    if(SpvalueStorage.getInt("currentTheme",0)==1) Localurl="file:///android_asset/nights/lindex_results.html";
-
+                   // if(SpvalueStorage.getInt("currentTheme",0)==1) Localurl="file:///android_asset/nights/lindex_results.html";
                     HanzdetailActivity.startActivityWithLoadUrl(getActivity(),HanzdetailActivity.class,Localurl,"详细信息",sid);
 
                     return true;
-                }else if(url.startsWith(local_url+"reload_/")){
+                }
+                 else if(url.startsWith(offline_url)){
+                     String murl=url.replace(offline_url,"");
+                     String Localmurl="file:///android_asset/offline/lindex_results_offline.html";
+                     HanzdetailActivity.startActivityWithLoadUrl(getActivity(),HanzdetailActivity.class,Localmurl,"详细信息",murl);
 
-                     String si=url.replace(local_url+"reload_/","");
+                     return true;
+                 }
+
+                 else if(url.startsWith(local_reload)){
+
+                     String si=url.replace(local_reload,"");
 
                      getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -215,13 +227,19 @@ public class searchFrag extends UniversalWebView {
 
 
 
-public void CheckCmn_preview(){
-    int key=sp.getInt(Keystatics.keys[0], 0);
+public void CheckIsOffline(){
+    getActivity().runOnUiThread(() -> {
+        int isOffline=sp.getInt(Keystatics.keys[0], 0);
+        int currentWeb=sp.getInt("searchWeb",0);
+        String search_url="file:///android_asset/lindex.html";
+        if(isOffline==1){
+            search_url="file:///android_asset/offline/lindex_offline.html";
+        }
 
-    getActivity().runOnUiThread(new Runnable() {
-        @Override
-        public void run() {
-            mWebView.loadUrl("javascript:setPinpreview("+key+")");
+        if(isOffline!=currentWeb){
+            editor.putInt("searchWeb",isOffline);
+            editor.commit();
+            mWebView.loadUrl(search_url);
         }
     });
 }
@@ -229,6 +247,6 @@ public void CheckCmn_preview(){
     @Override
     public void onResume() {
         super.onResume();
-        CheckCmn_preview();
+        CheckIsOffline();
     }
 }

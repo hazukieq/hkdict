@@ -1,6 +1,6 @@
 //打开设置界面
 function openSettings(){
-
+    app.openSetting()
 }
 
 //打开侧边菜单栏
@@ -467,7 +467,7 @@ function ResultPinCard(pinract){
 function generateList(hanzs,qinks){
     var reR='';
     for(s in hanzs){
-        reR+='<li class="list-inline-item p-2"><a class="aslink pt-2 pb-2" href="hkapp://search_/?s='+qinks[s]+'">'+hanzs[s]+'</a></li>';
+        reR+='<li class="list-inline-item p-2"><a class="aslink pt-2 pb-2" href="hkoffline://search_/?s='+qinks[s]+'">'+hanzs[s]+'</a></li>';
     }
     return reR;
 }

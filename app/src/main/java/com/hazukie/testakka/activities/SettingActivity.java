@@ -17,31 +17,16 @@ import com.hazukie.testakka.webutils.Keystatics;
 import com.hazukie.testakka.webutils.SpvalueStorage;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
+import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
 import org.greenrobot.eventbus.EventBus;
 
 public class SettingActivity extends ActcomWeb {
 
-    public SettingActivity() {
-        menus = new String[]{"刷新页面"};
-        isList = false;
-        Bottom_dialog_mode = false;
-    }
-
     @Override
-    public void geParams() {
-        super.geParams();
-
-    }
-
-    @Override
-    public void customStatus() {
-        super.customStatus();
-        hiddenST(true);
-       // int y=SpvalueStorage.getInt("currentTheme", 0);
-        //loadNightOrNot(y);
-        QMUIStatusBarHelper.setStatusBarLightMode(this);
-        QMUIStatusBarHelper.translucent(this);
+    public void customStatus(QMUITopBarLayout topBarLayout) {
+        setLightOrDarkStatusBar(1);
+        hiddenStatusBar(true);
     }
 
 
@@ -53,14 +38,6 @@ public class SettingActivity extends ActcomWeb {
 
     }
 
-   /* public void loadNightOrNot(int type){
-        if(type==0){
-            QMUIStatusBarHelper.setStatusBarLightMode(this);
-        }else{
-            QMUIStatusBarHelper.setStatusBarDarkMode(this);
-        }
-
-    }*/
 
     public class Showdialoh extends Dialogsheet {
 
@@ -91,22 +68,6 @@ public class SettingActivity extends ActcomWeb {
         public void setSwitch(int id,int s){
             SpvalueStorage.getInstance(SettingActivity.this);
             SpvalueStorage.setIntValue(Keystatics.keys[id],s);
-/*            if(id==2){
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        switch (s){
-                            case 0:
-                                mWebView.loadUrl("file:///android_asset/setting.html");
-                                break;
-                            case 1:
-                                mWebView.loadUrl("file:///android_asset/nights/setting.html");
-                                break;
-                        }
-                        loadNightOrNot(s);
-                    }
-                });
-            }*/
             }
 
             @JavascriptInterface
@@ -236,9 +197,6 @@ public class SettingActivity extends ActcomWeb {
         }
 
 
-
-
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode==KeyEvent.KEYCODE_BACK&&event.getRepeatCount()==0){
@@ -246,19 +204,5 @@ public class SettingActivity extends ActcomWeb {
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        /*SpvalueStorage.getInstance(this);
-        int nightMode=SpvalueStorage.getInt(Keystatics.keys[2], 0);
-        int currentTheme=SpvalueStorage.getInt("currentTheme",1 );
-        if(currentTheme!=nightMode){
-            SpvalueStorage.getInstance(SettingActivity.this);
-            SpvalueStorage.setIntValue("currentTheme",nightMode);
-            EventMsg msg=new EventMsg(nightMode);
-            EventBus.getDefault().post(msg);
-        }*/
     }
 }

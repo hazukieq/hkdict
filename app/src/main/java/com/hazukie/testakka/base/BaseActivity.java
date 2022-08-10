@@ -44,18 +44,4 @@ public class BaseActivity extends AppCompatActivity {
     public static Context getContext() {
         return context;
     }
-
-    public void updateTheme(){
-        SpvalueStorage.getInstance(this);
-        int s=SpvalueStorage.getInt("currentTheme",0);
-        switch (s){
-            case 0:
-               // setTheme(R.style.Theme);
-                break;
-            case 1:
-                setTheme(R.style.dark_Theme);
-                break;
-        }
-
-    }
 }

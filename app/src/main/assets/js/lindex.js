@@ -1,6 +1,6 @@
 //打开设置界面
 function openSettings(){
-
+    app.openSetting()
 }
 
 //打开侧边菜单栏
@@ -189,7 +189,7 @@ function combinationUrl(input_value,type){
 
     //第一个参数value，表示实际输入字符；format表示输入格式；appendArea表示第二层分类；
     var url_template=`?value=${value_}&format=${format_}&appendArea=${appendArea_}`
-    console.log('-->'+url_template)
+    //console.log('-->'+url_template)
     //这里写入网站api；
     return url_template;
 
@@ -204,10 +204,10 @@ function AlinkService(){
         //这里写入网站api；
         var final_url=''
         if (url.includes('format=hz&appendArea=kull')){
-            final_url='http://dict.hazukieq.top/lindex/search_hz'+url;
+            final_url='http://dict.hazukieq.top/searchapis/search_hz'+url;
         }
         else{
-            final_url='http://dict.hazukieq.top/lindex/search_pin'+url;
+            final_url='http://dict.hazukieq.top/searchapis/search_pin'+url;
         }
     
         if(navigator.onLine){
@@ -274,31 +274,6 @@ function AsyncCategories(){
             </li>`;
     }
     uls.innerHTML=body;
-
-    /*var ajax=new Ajax({
-        method:'GET',
-        url:'http://blog.hazukieq.top/apis/hkarea.txt',
-        data:'',
-        success:(text)=>{
-            hks=JSON.parse(text)
-            var dil=hks.names
-            var il=hks.codes
-            //这里传入解析数据；
-            for(var i=0;i<hks.names.length;i++){
-                //载入数据节点；
-                let hk_category=dil[i];
-                body+='<li>'+
-                        '<a class="dropdown-item" onclick="changeCategoryHint(this)" href="javascript:void(0)" datas="'+il[i]+'">'+hk_category+'</a>'+
-                       '</li>';
-            }
-            uls.innerHTML=body;
-        },
-        failure:()=>{
-
-        },
-        timeout:1000
-    })
-    ajax.send()*/
 
 }
 

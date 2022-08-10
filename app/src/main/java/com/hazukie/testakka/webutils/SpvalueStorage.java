@@ -38,6 +38,5 @@ public class SpvalueStorage {
     public static void  setIntValue(String key,int value){
         editor.putInt(key,value);
         editor.commit();
-
     }
 }

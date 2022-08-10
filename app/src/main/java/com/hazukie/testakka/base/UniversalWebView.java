@@ -46,8 +46,6 @@ public class UniversalWebView extends Fragment {
     public SharedPreferences sp;
     public SharedPreferences.Editor editor;
 
-    public static final String EXTRA_URL="EXTRA_URL";
-
 
     private String mUrl;
 
@@ -55,7 +53,7 @@ public class UniversalWebView extends Fragment {
     public boolean NEED_CLEAR=false;
     private boolean isAdd=false;
 
-    public String open_url="https://voice.baidu.com/act/newpneumonia/newpneumonia";//"https://www.bilibili.com";
+    public String open_url="https://www.baidu.com";
 
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -102,30 +100,17 @@ public class UniversalWebView extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root=inflater.inflate(R.layout.universal_web_view, container, false);
-        web_frame=(FrameLayout) root.findViewById(R.id.web_frame);
+        web_frame=root.findViewById(R.id.web_frame);
         sp= PreferenceManager.getDefaultSharedPreferences(getContext());
         editor=sp.edit();
-        //web_error=new QMUIEmptyView(getActivity());
-        //web_error.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
 
-        Bundle returns=setArguments();
-        if(returns!=null){
-            String url=returns.getString(EXTRA_URL);
-            if(url!=null&&url.length()>0){
-                handleUrl(url);
-            }
-        }
+        if(open_url!=null&&open_url.length()>0) handleUrl(open_url);
 
         initWebView();
         return root;
     }
 
-    //继承方法后，可自由加载网页链接
-    public Bundle setArguments(){
-        Bundle bun=new Bundle();
-        bun.putString(EXTRA_URL,open_url);
-        return bun;
-    }
+
 
 
     protected void initWebView(){
@@ -143,7 +128,6 @@ public class UniversalWebView extends Fragment {
         mWebView.loadUrl(mUrl);
 
         onKeyDown();
-
     }
 
 
@@ -153,7 +137,6 @@ public class UniversalWebView extends Fragment {
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if(i==KeyEvent.KEYCODE_BACK&&mWebView.canGoBack()){
                     if(keyEvent.getAction()==KeyEvent.ACTION_DOWN){
-                       // if(isAdd) mWebView.removeView(web_error);
                         mWebView.goBack();
                         return true;
                     }
@@ -199,7 +182,7 @@ public class UniversalWebView extends Fragment {
         super.onResume();
     }
 
-    @Override
+    /*@Override
     public void onDestroy() {
         //销毁WebView组件，防止内存泄露
         if(mWebView!=null){
@@ -209,7 +192,7 @@ public class UniversalWebView extends Fragment {
             mWebView=null;
         }
         super.onDestroy();
-    }
+    }*/
 
 
 
@@ -222,14 +205,13 @@ public class UniversalWebView extends Fragment {
     }
 
     protected class UniwebClient extends  WebViewClient{
-        public UniwebClient mWebViewClient;
 
         public UniwebClient(){ }
         @Override
         public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
             super.doUpdateVisitedHistory(view, url, isReload);
             //清空错误代码加载成功后之前保留的后台栈历史
-            if(NEED_CLEAR) view.clearHistory();
+             view.clearHistory();
         }
 
         @Override
@@ -246,6 +228,4 @@ public class UniversalWebView extends Fragment {
         }
 
     }
-
-
 }

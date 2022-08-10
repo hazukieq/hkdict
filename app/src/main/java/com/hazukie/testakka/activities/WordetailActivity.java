@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.hazukie.testakka.R;
 import com.hazukie.testakka.base.ActcomWeb;
 import com.hazukie.testakka.base.CnWebView;
+import com.hazukie.testakka.infoutils.BottomSheet;
 import com.hazukie.testakka.webutils.SpvalueStorage;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
@@ -23,22 +24,9 @@ import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 
 public class WordetailActivity extends ActcomWeb {
-    private static int[] dRes = new int[]{R.drawable.ic_action_webview_copy};
-    private static String[] menus = new String[]{
-            "页面设置"
-    };
-    private static int[] tags = new int[]{
-            4
-    };
-
-    @SuppressLint("JavascriptInterface")
-    @Override
-    protected void configWebView(CnWebView webView) {
-        super.configWebView(webView);
-    }
-
     private static String host_url = "http://dict.hazukieq.top/words/lwordetail/";
     private static String local_url = "hkapp://";
+
 
     @Override
     protected WebViewClient getWebViewClient() {
@@ -54,23 +42,32 @@ public class WordetailActivity extends ActcomWeb {
             }
         };
     }
+
     @Override
-    public void customStatus() {
-        super.customStatus();
-        //int y= SpvalueStorage.getInt("currentTheme", 0);
-        //loadNightOrNot(y);
-        QMUIStatusBarHelper.setStatusBarLightMode(this);
-        QMUIStatusBarHelper.translucent(this);
-    }
+    public void customStatus(QMUITopBarLayout topBarLayout) {
+        setLightOrDarkStatusBar(1);
+        topBarLayout.addLeftBackImageButton().setOnClickListener(view -> {
+            if (mWebView.canGoBack()) mWebView.goBack();
+            else finish();
+        });
 
-    public void loadNightOrNot(int type){
-        if(type==0){
-            QMUIStatusBarHelper.setStatusBarLightMode(this);
-        }else{
-            QMUIStatusBarHelper.setStatusBarDarkMode(this);
-
-        }
-
+        topBarLayout.addRightImageButton(R.drawable.ic_action_more, R.id.web_topbar).setOnClickListener(view -> {
+            //网页菜单
+            new BottomSheet(view.getContext(), new BottomSheet.Clicks() {
+                @Override
+                public void controlVerticalList(int position) {
+                    switch (position){
+                        case 0:
+                            mWebView.reload();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                @Override
+                public void controlHorizontalList(int tag) {}
+            }).setVerticalList(new String[]{"刷新页面"});
+        });
     }
 
 }

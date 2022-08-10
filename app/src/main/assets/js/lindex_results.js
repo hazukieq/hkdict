@@ -172,7 +172,7 @@ function generateCard(sjo){
     var ps=sjo.ps;
     var cmnp=(sjo.cmn_p!='')?sjo.cmn_p:'缺';
     var vas=sjo.va;
-    var vas_ext=(vas!='')?`<p class="m-1">异体字：<span class="card_text">${vas}</span></p>`:'';
+    var vas_ext=(vas!=null)?`<p class="m-1">异体字：<span class="card_text">${vas}</span></p>`:'';
     var cardBody_content=''+allHakkaspagers();
     var card_=
                 `<div class="card m-2 border-0">
@@ -242,7 +242,9 @@ function returnPager(sound){
     source_ext=""
     for(var t=0;t<names.length;t++){
         //<li><font color="#d63384;"></font></li>
-        source_ext+=`${names[t]}：<font color="#d63384">${source[t].replace('来源：','')}</font><br/><font color="#495050">声调</font><br/><small>${tones_[t]}</small><br/><br/>`
+        var tource_=tones_[t].replace(/^\d/,'第1声 ')
+        var ource_=tource_.replace(/,(\d)/g,'<br/>第$1声 ');
+        source_ext+=`${names[t]}：<font color="#d63384">${source[t].replace('来源：','')}</font><br/><font color="#495050">声调</font><br/><small>${ource_}</small><br/><br/>`
    }
    
     var contents='';
@@ -283,7 +285,7 @@ function requesthakkas(){
 
     var type=app.returnHk_type()
     var toney=app.returnHk_toney()
-    var request_url=`http://192.168.137.1:8080/searchapis/getpins?value=${hz}&hkarea=jetd&type=${type}&toney=${toney}`;//'http://dict.hazukieq.top/lindex/getpins?value='+hz+'&hkarea=jetd&type='+type+'&toney='+toney;
+    var request_url=`http://dict.hazukieq.top/searchapis/getpins?value=${hz}&hkarea=jetd&type=${type}&toney=${toney}`;//'http://dict.hazukieq.top/lindex/getpins?value='+hz+'&hkarea=jetd&type='+type+'&toney='+toney;
 
     sendAjax(request_url,2000,
         (text)=>{
@@ -331,7 +333,7 @@ function changeSoundVisible(area_codes){
 
 
     //请求API，通过请求参数来请求不同的显示数据
-    var api_request=`http://192.168.137.1:8080/searchapis/getpins?value=${hz}&hkarea=${area_code}&type=${type}&toney=${toney}`;//'http://dict.hazukieq.top/lindex/getpins?value='+hz+'&hkarea='+area_code+'&type='+type+'&toney='+toney;
+    var api_request=`http://dict.hazukieq.top/searchapis/getpins?value=${hz}&hkarea=${area_code}&type=${type}&toney=${toney}`;//'http://dict.hazukieq.top/lindex/getpins?value='+hz+'&hkarea='+area_code+'&type='+type+'&toney='+toney;
 
     if(area_code!=''){
         sendAjax(api_request,2000,

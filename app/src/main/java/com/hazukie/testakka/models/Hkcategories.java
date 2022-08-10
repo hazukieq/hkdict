@@ -7,33 +7,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Hkcategories {
-        private List<String> codes;
-        private List<String> names;
+    public List<String> codes;
+    public List<String> names;
     public Hkcategories(List<String> codes,List<String> names){
         this.codes=codes;
         this.names=names;
     }
-        public void setCodes(List<String> codes) {
-            this.codes = codes;
-        }
-        public List<String> getCodes() {
-            return codes;
-        }
 
-        public void setNames(List<String> names) {
-            this.names = names;
-        }
-        public List<String> getNames() {
-            return names;
-        }
-
-    @Override
-    public String toString() {
-        return "Hkcategories{" +
-                "codes=" + codes +
-                ", names=" + names +
-                '}';
-    }
 
     public String toFormatedStrings(){
         StringBuilder builder=new StringBuilder();

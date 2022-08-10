@@ -15,28 +15,32 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.hazukie.testakka.R;
 import com.hazukie.testakka.base.ActcomWeb;
 import com.hazukie.testakka.base.CnWebView;
+import com.hazukie.testakka.database.DatabaseObserver;
+import com.hazukie.testakka.database.Hkdatabase;
+import com.hazukie.testakka.database.QueryHanzTask;
+import com.hazukie.testakka.infoutils.BottomSheet;
+import com.hazukie.testakka.models.Hkhan_model;
 import com.hazukie.testakka.webutils.Keystatics;
 import com.hazukie.testakka.webutils.SpvalueStorage;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
+import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import org.w3c.dom.Text;
 
-public class HanzdetailActivity extends ActcomWeb {
-    private boolean isCanBack=true;
+import java.util.List;
 
-    public HanzdetailActivity(){
-        menus=new String[]{"刷新页面"};
-        //imgRes=new int[]{R.drawable.}
-        isList=true;
-        Bottom_dialog_mode=true;
-    }
+import kotlin.HashCodeKt;
+
+public class HanzdetailActivity extends ActcomWeb {
+    private static String local_url = "hkapp://";
 
     @SuppressLint("JavascriptInterface")
     @Override
@@ -45,7 +49,6 @@ public class HanzdetailActivity extends ActcomWeb {
         mWebView.addJavascriptInterface(new HanzDetails(), "app");
     }
 
-    private static String local_url = "hkapp://";
 
     @Override
     protected WebViewClient getWebViewClient() {
@@ -54,15 +57,7 @@ public class HanzdetailActivity extends ActcomWeb {
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
                     if (url.startsWith(local_url + "reload_/")) {
                         String reload_url = url.replace(local_url + "reload_/", "");
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mWebView.loadUrl("javascript:getUrl('" + reload_url + "')");
-                            }
-                        });
-                        return true;
-                    }else if(url.equals("hkapp://detail_/")){
-                        DialectDetailActivity.startActivityWithLoadUrl(HanzdetailActivity.this  ,DialectDetailActivity.class,"file:///android_asset/dialects/introduce/unihk_introduce.html","通用客家话拼音方案","file:///android_asset/dialect.html");
+                        runOnUiThread(() -> mWebView.loadUrl("javascript:getUrl('" + reload_url + "')"));
                         return true;
                     }
                     return false;
@@ -73,21 +68,37 @@ public class HanzdetailActivity extends ActcomWeb {
 
 
         @Override
-        public void customStatus() {
-            super.customStatus();
-            int y=SpvalueStorage.getInt("currentTheme", 0);
-            loadNightOrNot(y);
-            QMUIStatusBarHelper.translucent(this);
-        }
+        public void customStatus(QMUITopBarLayout topBarLayout) {
 
-        public void loadNightOrNot(int type){
-        if(type==0){
-            QMUIStatusBarHelper.setStatusBarLightMode(this);
-        }else{
-            QMUIStatusBarHelper.setStatusBarDarkMode(this);
-        }
-    }
+            setLightOrDarkStatusBar(1);
+            topBarLayout
+                    .addLeftBackImageButton()
+                    .setOnClickListener(view -> {
+                        if (mWebView.canGoBack()) mWebView.goBack();
+                        else finish();
+                    });
 
+            topBarLayout
+                    .addRightImageButton(R.drawable.ic_action_more, R.id.web_topbar)
+                    .setOnClickListener(view -> {
+                        //网页菜单
+                        //controlRightmenus(view);
+                        new BottomSheet(view.getContext(), new BottomSheet.Clicks() {
+                            @Override
+                            public void controlVerticalList(int position) {
+                            switch (position){
+                                case 0:
+                                    mWebView.reload();
+                                    break;
+                                default:
+                                    break;
+                                }
+                            }
+                        @Override
+                        public void controlHorizontalList(int tag) {}
+                        }).setVerticalList(new String[]{"刷新页面"});
+                    });
+        }
 
     public class HanzDetails {
             @JavascriptInterface
@@ -103,6 +114,67 @@ public class HanzdetailActivity extends ActcomWeb {
                         mWebView.loadUrl(str);
                     }
                 });
+            }
+
+            @JavascriptInterface
+            public void offlineLoad(){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String str=String.format("javascript:getUrl('%s')",open_param);
+                        mWebView.loadUrl(str);
+                    }
+                });
+            }
+
+            @JavascriptInterface
+            public void AsyncJSON(){
+                Hkdatabase hkdatabase=Hkdatabase.getInstance(HanzdetailActivity.this);
+                new QueryHanzTask(hkdatabase, new DatabaseObserver() {
+                    @Override
+                    public void callbackOfMsg(List<Hkhan_model> datas) {
+                        if(datas.size()>=1){
+                            if(datas.get(0).hz=="..."){
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mWebView.loadUrl("javascript:card_skeleton(2,'"+open_param+"')");
+
+                                    }
+                                });
+                            }else{
+                                Gson gson=new Gson();
+                                String jsons=gson.toJson(datas.get(0));
+
+
+                                if(!jsons.contains("va")){
+                                    jsons=jsons.replace("}",",\"va\":\"\"}");
+                                }
+
+                                if(!jsons.contains("hd")){
+                                    jsons=jsons.replace("}",",\"hd\":\"\"}");
+                                }
+
+                                if(!jsons.contains("jetd_gajin_hk")){
+                                    jsons=jsons.replace("}",",\"jetd_gajin_hk\":\"\"}");
+                                }
+
+                                if(!jsons.contains("cmn_p")){
+                                    jsons=jsons.replace("}",",\"cmn_p\":\"\"}");
+                                }
+
+                                String jsons_=jsons;
+                                //Log.i("onHanzdetailActivity_AsyncJson>>",jsons);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mWebView.loadUrl("javascript:mergeCardLayout("+jsons_+")");
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }, open_param).execute();
             }
 
             @JavascriptInterface
@@ -130,23 +202,6 @@ public class HanzdetailActivity extends ActcomWeb {
             }
     }
 
-
-
-    @Override
-    public RightMenu controlRightmenus(View view) {
-        return new RightMenu(view.getContext()){
-            @Override
-            public void controlList(int tags) {
-                switch (tags){
-                    case 0:
-                        mWebView.reload();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
-    }
 
     public String returnAllParams(){
         SpvalueStorage.getInstance(HanzdetailActivity.this);

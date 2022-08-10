@@ -69,6 +69,17 @@
             android:background="@color/white"
             android:text="应用设置"
             android:layout_below="@id/main_menu_title"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textColor="@color/text_gray"
+            android:textSize="16sp"
+            android:id="@+id/app_hkintroduce"
+            android:background="@color/white"
+            android:text="通用客拼方案详解"
+            android:layout_below="@id/app_setting"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
@@ -76,7 +87,7 @@
             android:layout_marginLeft="18dp"
             android:layout_marginRight="18dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_below="@id/app_setting"
+            android:layout_below="@id/app_hkintroduce"
             android:id="@+id/main_menu_title_recy"
             android:background="?attr/theme_recyclerview_bg_color"/>
     </RelativeLayout>

@@ -108,7 +108,7 @@ public class LauncherActivity extends BaseActivity{
                     }
                     @Override
                     public void onFinish(DownloadBean bean) throws IOException {
-                        Toast.makeText(LauncherActivity.this, "精简数据库下载成功！", Toast.LENGTH_SHORT).show();
+
                         txt_state.setText("下载完成");
                         progressBar.setProgress(100);
                         dialog.dismiss();

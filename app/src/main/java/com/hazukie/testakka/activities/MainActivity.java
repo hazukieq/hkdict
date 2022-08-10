@@ -41,38 +41,40 @@ public class MainActivity extends BaseActivity {
     private QViewpager2 viewPager2;
     private PagerAdapter adapter;
     private DrawerLayout drawerLayout;
-    private Button app_settings;
+    private Button app_settings,app_hkintroduce;
     private boolean isScroll=true;
     private String setting_url="file:///android_asset/setting.html";
-    private Hkdatabase hkdatabase;
-    private List<Hkhan_model> hkhan_modelList=new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        drawerLayout=(DrawerLayout)findViewById(R.id.main_app_drawer);
+        drawerLayout= findViewById(R.id.main_app_drawer);
         drawerLayout.setScrimColor(Color.TRANSPARENT);
-        viewPager2=(QViewpager2) findViewById(R.id.main_app_pagers);
-        tabs=(TabLayout) findViewById(R.id.main_app_tabs);
-        app_settings=(Button) findViewById(R.id.app_setting);
-        /*SpvalueStorage.getInstance(this);
-        int s=SpvalueStorage.getInt("currentTheme",0);
-        if(s==1){
-            setting_url="file:///android_asset/nights/setting.html";
-        }*/
+        viewPager2= findViewById(R.id.main_app_pagers);
+        tabs= findViewById(R.id.main_app_tabs);
+        app_settings= findViewById(R.id.app_setting);
+        app_hkintroduce= findViewById(R.id.app_hkintroduce);
 
-        app_settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SettingActivity.startActivityWithLoadUrl(MainActivity.this,SettingActivity.class,setting_url,"应用设置","");
-            }
-        });
+        app_hkintroduce
+                .setOnClickListener(v -> DialectDetailActivity
+                        .startActivityWithLoadUrl(MainActivity.this  ,
+                                DialectDetailActivity.class,
+                                "https://blog.hazukieq.top/html/unihk_introduce.html","通用客家话拼音方案",
+                                "file:///android_asset/dialect.html"));
 
-        initPagers();
+
+        app_settings.setOnClickListener(v -> SettingActivity
+                .startActivityWithLoadUrl(MainActivity.this,
+                        SettingActivity.class,setting_url,
+                        "应用设置",""));
+
+        SpvalueStorage.getInstance(this);
+        int isOffline=SpvalueStorage.getInt("searchWeb",0);
+        initPagers(isOffline);
         setViewPager2Scroll();
-        //EventBus.getDefault().register(this);
     }
 
     /*@Subscribe(threadMode = ThreadMode.MAIN)
@@ -85,14 +87,16 @@ public class MainActivity extends BaseActivity {
     }*/
 
 
-    private void initPagers(){
+    private void initPagers(int isOffline){
         FragmentManager fm=getSupportFragmentManager();
         adapter=new PagerAdapter(fm) {
             @Override
             public Fragment createFragment(int position) {
                     switch (position) {
                         case 0:
-                            return new searchFrag("file:///android_asset/lindex_offline.html");
+                            String search_url="file:///android_asset/lindex.html";
+                            if(isOffline==1) search_url="file:///android_asset/offline/lindex_offline.html";
+                            return new searchFrag(search_url);
                         case 1:
                             return new wordFrag("file:///android_asset/lwords.html");
                         case 2:
@@ -163,7 +167,7 @@ public class MainActivity extends BaseActivity {
 
     public void setViewPager2Scroll(){
         SpvalueStorage.getInstance(MainActivity.this);
-        int s= SpvalueStorage.getInt(Keystatics.keys[2],1 );
+        int s= SpvalueStorage.getInt(Keystatics.keys[1],1 );
         if(s==0){
             viewPager2.setCanScroll(false);
         }
@@ -194,6 +198,5 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //EventBus.getDefault().unregister(this);
     }
 }

@@ -12,9 +12,9 @@ import java.util.List;
  */
 public class EarchPin {
 
-    private String input_type;
-    private String origin;
-    private List<Pins> pins;
+    public String input_type;
+    public String origin;
+    public List<Pins> pins;
 
     public EarchPin(String input_type, String origin, List<Pins> pins){
         this.input_type=input_type;

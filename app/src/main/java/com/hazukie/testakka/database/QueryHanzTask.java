@@ -11,7 +11,7 @@ public  class QueryHanzTask extends AsyncTask<Void,Void, List<Hkhan_model>> {
     private Hkdatabase hkdatabase;
     private DatabaseObserver observer;
     private List<Hkhan_model> hkhans=new ArrayList<>();
-    private String hz="";
+    private String hz;
 
     public QueryHanzTask(Hkdatabase hkdatabase, DatabaseObserver observer, String hz){
         this.observer=observer;

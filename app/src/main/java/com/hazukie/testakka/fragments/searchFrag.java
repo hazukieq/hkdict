@@ -5,9 +5,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 
 import androidx.fragment.app.Fragment;
-import androidx.sqlite.db.SimpleSQLiteQuery;
 
-import android.content.Intent;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 
@@ -16,7 +14,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.hazukie.testakka.Fileutils.FileUtil;
+import com.hazukie.testakka.fileutils.FileUtil;
 import com.hazukie.testakka.activities.HanzdetailActivity;
 import com.hazukie.testakka.activities.MainActivity;
 import com.hazukie.testakka.activities.SettingActivity;
@@ -34,16 +32,12 @@ import com.hazukie.testakka.models.Hkcategories;
 import com.hazukie.testakka.models.Hkhan_model;
 import com.hazukie.testakka.models.Pins;
 import com.hazukie.testakka.webutils.Keystatics;
-import com.hazukie.testakka.webutils.SpvalueStorage;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A simple {@link Fragment} subclass.

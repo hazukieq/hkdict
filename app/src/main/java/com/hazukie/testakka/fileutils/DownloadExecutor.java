@@ -1,4 +1,4 @@
-package com.hazukie.testakka.Fileutils;
+package com.hazukie.testakka.fileutils;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;

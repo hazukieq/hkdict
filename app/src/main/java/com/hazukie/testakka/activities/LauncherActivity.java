@@ -7,12 +7,10 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.hazukie.testakka.Fileutils.DownloadBean;
-import com.hazukie.testakka.Fileutils.DownloadManager;
-import com.hazukie.testakka.Fileutils.DownloadObserver;
-import com.hazukie.testakka.Fileutils.FileUtil;
+import com.hazukie.testakka.fileutils.DownloadBean;
+import com.hazukie.testakka.fileutils.DownloadManager;
+import com.hazukie.testakka.fileutils.DownloadObserver;
 import com.hazukie.testakka.R;
 import com.hazukie.testakka.base.BaseActivity;
 import com.hazukie.testakka.webutils.Gexhttp;

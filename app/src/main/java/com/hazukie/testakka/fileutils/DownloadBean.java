@@ -1,4 +1,4 @@
-package com.hazukie.testakka.Fileutils;
+package com.hazukie.testakka.fileutils;
 
 import java.io.Serializable;
 

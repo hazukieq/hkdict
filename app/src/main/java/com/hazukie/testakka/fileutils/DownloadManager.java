@@ -1,4 +1,4 @@
-package com.hazukie.testakka.Fileutils;
+package com.hazukie.testakka.fileutils;
 
 import android.annotation.SuppressLint;
 import android.os.Handler;

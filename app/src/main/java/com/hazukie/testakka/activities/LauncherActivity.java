@@ -31,10 +31,6 @@ public class LauncherActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SpvalueStorage.getInstance(this);
-        /*int s = SpvalueStorage.getInt("currentTheme", 2);
-        if (s == 2) {
-            SpvalueStorage.setIntValue("currentTheme", 0);
-        }*/
         checkPreload();
         checkUpdateCategories();
     }
@@ -164,16 +160,16 @@ public class LauncherActivity extends BaseActivity{
         Calendar cal=Calendar.getInstance();
         Date date=new Date();
         cal.setTime(date);
-        Integer day=cal.get(Calendar.DAY_OF_YEAR);
+        int day=cal.get(Calendar.DAY_OF_YEAR);
 
         int check_=SpvalueStorage.getInt("hkcategories_date",0);
         Log.i("curret-day:",String.valueOf(check_));
         if(check_==0){
             SpvalueStorage.setIntValue("hkcategories_date",day);
-            Gexhttp.sendMsg(LauncherActivity.this,"https://blog.hazukieq.top/apis/hkarea.txt",day);
+            Gexhttp.sendMsg(LauncherActivity.this,"https://www.hazukieq.top/apis/hkarea.txt",day);
         }else if(check_+3==day){
                 Log.i("Launcher:","Now updating Hkcategories!");
-                Gexhttp.sendMsg(LauncherActivity.this,"https://blog.hazukieq.top/apis/hkarea.txt",day);
+                Gexhttp.sendMsg(LauncherActivity.this,"https://www.hazukieq.top/apis/hkarea.txt",day);
         }
     }
 

@@ -1,6 +1,8 @@
 package com.hazukie.testakka.activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -39,11 +41,9 @@ public class MainActivity extends BaseActivity {
 
     private TabLayout tabs;
     private QViewpager2 viewPager2;
-    private PagerAdapter adapter;
     private DrawerLayout drawerLayout;
-    private Button app_settings,app_hkintroduce;
-    private boolean isScroll=true;
-    private String setting_url="file:///android_asset/setting.html";
+    //private boolean isScroll=true;
+    private final String setting_url="file:///android_asset/setting.html";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +55,8 @@ public class MainActivity extends BaseActivity {
         drawerLayout.setScrimColor(Color.TRANSPARENT);
         viewPager2= findViewById(R.id.main_app_pagers);
         tabs= findViewById(R.id.main_app_tabs);
-        app_settings= findViewById(R.id.app_setting);
-        app_hkintroduce= findViewById(R.id.app_hkintroduce);
+        Button app_settings = findViewById(R.id.app_setting);
+        Button app_hkintroduce = findViewById(R.id.app_hkintroduce);
 
         app_hkintroduce
                 .setOnClickListener(v -> DialectDetailActivity
@@ -74,7 +74,7 @@ public class MainActivity extends BaseActivity {
         SpvalueStorage.getInstance(this);
         int isOffline=SpvalueStorage.getInt("searchWeb",0);
         initPagers(isOffline);
-        setViewPager2Scroll();
+        //setViewPager2Scroll();
     }
 
     /*@Subscribe(threadMode = ThreadMode.MAIN)
@@ -89,10 +89,7 @@ public class MainActivity extends BaseActivity {
 
     private void initPagers(int isOffline){
         FragmentManager fm=getSupportFragmentManager();
-        adapter=new PagerAdapter(fm) {
-            @Override
-            public Fragment createFragment(int position) {
-                    switch (position) {
+        /*                    switch (position) {
                         case 0:
                             String search_url="file:///android_asset/lindex.html";
                             if(isOffline==1) search_url="file:///android_asset/offline/lindex_offline.html";
@@ -100,10 +97,69 @@ public class MainActivity extends BaseActivity {
                         case 1:
                             return new wordFrag("file:///android_asset/lwords.html");
                         case 2:
+                            return new translationFrag("file:///android_asset/lhelp.html");
+                        default:
+                            return null;
+                    }*/
+        /*    private void initPagers(int isNightOrNot){
+        FragmentManager fm=getSupportFragmentManager();
+        adapter=new PagerAdapter(fm) {
+            @Override
+            public Fragment createFragment(int position) {
+                if(isNightOrNot==0) {
+                    switch (position) {
+                        case 0:
+                            return new searchFrag("file:///android_asset/lindex_offline.html");
+                        case 1:
+                            return new wordFrag("file:///android_asset/lwords.html");
+                        case 2:
                             return new translationFrag("file:///android_asset/lhelp.html");//"http://43.142.122.229");
                         default:
                             return null;
                     }
+                }else{
+                    switch (position) {
+                        case 0:
+                            //searchFrag searc=new searchFrag("file:///android_asset/nights/lindex.html");
+                            return new searchFrag("file:///android_asset/nights/lindex.html");
+                        case 1:
+                            return new wordFrag("file:///android_asset/nights/lwords.html");
+                        case 2:
+                            return new translationFrag("file:///android_asset/nights/lhelp.html");//"http://43.142.122.229");
+                        default:
+                            return null;
+                    }
+                }
+            }*/
+        /*switch (position){
+                    case 0:
+                        return "首页";
+                    case 1:
+                        return "词汇";
+                    case 2:
+                        return "翻译";
+                    default:
+                        return "";
+                }*/
+        PagerAdapter adapter = new PagerAdapter(fm) {
+            @Override
+            public Fragment createFragment(int position) {
+                String search_url = "file:///android_asset/lindex.html";
+                if (isOffline == 1)
+                    search_url = "file:///android_asset/offline/lindex_offline.html";
+                return new searchFrag(search_url);
+/*                    switch (position) {
+                        case 0:
+                            String search_url="file:///android_asset/lindex.html";
+                            if(isOffline==1) search_url="file:///android_asset/offline/lindex_offline.html";
+                            return new searchFrag(search_url);
+                        case 1:
+                            return new wordFrag("file:///android_asset/lwords.html");
+                        case 2:
+                            return new translationFrag("file:///android_asset/lhelp.html");
+                        default:
+                            return null;
+                    }*/
             }
 
 /*    private void initPagers(int isNightOrNot){
@@ -140,13 +196,14 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public int getCount() {
-                return 3;
+                return 1;
             }
 
-            @Nullable
+            @NonNull
             @Override
             public CharSequence getPageTitle(int position) {
-                switch (position){
+                return "";
+                /*switch (position){
                     case 0:
                         return "首页";
                     case 1:
@@ -155,7 +212,7 @@ public class MainActivity extends BaseActivity {
                         return "翻译";
                     default:
                         return "";
-                }
+                }*/
             }
         };
 
@@ -165,17 +222,17 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    public void setViewPager2Scroll(){
+/*    public void setViewPager2Scroll(){
         SpvalueStorage.getInstance(MainActivity.this);
         int s= SpvalueStorage.getInt(Keystatics.keys[1],1 );
         if(s==0){
             viewPager2.setCanScroll(false);
         }
         else if(s==1) viewPager2.setCanScroll(true);
-    }
+    }*/
 
     public void showDrawer(){
-        drawerLayout.openDrawer(Gravity.LEFT);
+        drawerLayout.openDrawer(GravityCompat.START);
     }
 
 
@@ -192,7 +249,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setViewPager2Scroll();
+        //setViewPager2Scroll();
     }
 
     @Override

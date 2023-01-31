@@ -19,7 +19,7 @@ function loadSwitchs(offline,tabchange,night){
    // console.log(preview+","+offline+","+tabchange)
    // updateSwitch('pin_switch',preview);
     updateSwitch('offline_switch',offline);
-    updateSwitch('tab_switch',tabchange);
+    //updateSwitch('tab_switch',tabchange);
    // updateSwitch('night_switch',night)
 }
 

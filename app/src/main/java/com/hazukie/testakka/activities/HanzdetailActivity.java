@@ -198,7 +198,8 @@ public class HanzdetailActivity extends ActcomWeb {
 
             @JavascriptInterface
             public void showsource(String ltr){
-                showMessagePositiveDialog(ltr,HanzdetailActivity.this);
+                runOnUiThread(() -> showMessagePositiveDialog(ltr,HanzdetailActivity.this));
+
             }
     }
 

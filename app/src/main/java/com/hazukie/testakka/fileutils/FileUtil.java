@@ -3,6 +3,9 @@ package com.hazukie.testakka.fileutils;
 import android.content.Context;
 import android.util.Log;
 
+import com.hazukie.testakka.activities.LauncherActivity;
+import com.hazukie.testakka.webutils.Gexhttp;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -65,15 +68,21 @@ public class FileUtil {
     }
 
     public  String readFs(String to_name) throws  IOException{
-        File file=new File(context.getDir("datas",Context.MODE_PRIVATE),to_name);
-        FileReader in=new FileReader(file);
-        BufferedReader reader=new BufferedReader(in);
-        String line;
         StringBuilder builder=new StringBuilder();
-        while((line=reader.readLine())!=null){
-            builder.append(line);
+        File file=new File(context.getDir("datas",Context.MODE_PRIVATE),to_name);
+        if(!file.exists()) {
+            Gexhttp.sendMsg(context,"https://blog.hazukieq.top/apis/hkarea.txt",0);
+            file.createNewFile();
+        }else{
+            FileReader in=new FileReader(file);
+            BufferedReader reader=new BufferedReader(in);
+            String line;
+            while((line=reader.readLine())!=null){
+                builder.append(line);
+            }
+            reader.close();
         }
-        reader.close();
+
         return  builder.toString();
     }
 

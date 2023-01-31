@@ -1,25 +1,15 @@
 package com.hazukie.testakka.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.view.KeyEvent;
-import android.view.View;
 import android.webkit.JavascriptInterface;
-import android.widget.Toast;
 
 import com.hazukie.testakka.base.ActcomWeb;
 import com.hazukie.testakka.base.CnWebView;
 import com.hazukie.testakka.infoutils.Dialogsheet;
-import com.hazukie.testakka.infoutils.EventMsg;
 import com.hazukie.testakka.webutils.Keystatics;
 import com.hazukie.testakka.webutils.SpvalueStorage;
-import com.qmuiteam.qmui.skin.QMUISkinManager;
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
-
-import org.greenrobot.eventbus.EventBus;
 
 public class SettingActivity extends ActcomWeb {
 
@@ -39,29 +29,20 @@ public class SettingActivity extends ActcomWeb {
     }
 
 
-    public class Showdialoh extends Dialogsheet {
-
-        public Showdialoh(Context getContext) {
-            super(getContext);
-        }
-
-        @Override
-        public void controlClick(int position, String tag, String selectedValue) {
-
-            SpvalueStorage.getInstance(SettingActivity.this);
-            SpvalueStorage.setIntValue(tag, position);
-            //Toast.makeText(SettingActivity.this, "tag:"+tag+"-->"+selectedValue+",-->"+position, Toast.LENGTH_SHORT).show();
-            loadJSfunction(tag, selectedValue);
-            //super.controlClick(position);
-        }
-    }
-
     public class Settings {
-        private String retr = "";
+        //private String retr = "";
 
         @JavascriptInterface
         public void showaloh(int key, String name, String appendStr) {
-            new Showdialoh(SettingActivity.this).showBottom(key, "", Keystatics.getStatics(name), false, true, appendStr);
+            runOnUiThread(()->
+                    new Dialogsheet(SettingActivity.this,
+                            (position, tag, selectedValue) -> {
+                        SpvalueStorage.getInstance(SettingActivity.this);
+                        SpvalueStorage.setIntValue(tag, position);
+                        loadJSfunction(tag, selectedValue);
+                    })
+                            .showBottom(key, "", Keystatics.getStatics(name), false, true, appendStr)
+            );
         }
 
         @JavascriptInterface
@@ -79,22 +60,14 @@ public class SettingActivity extends ActcomWeb {
         @JavascriptInterface
         public void callSwics(){
             String values=autoloadSwics();
-             runOnUiThread(new Runnable() {
-                 @Override
-                 public void run() {
-                     mWebView.loadUrl("javascript:loadSwitchs("+values+")");
-                 }
-             });
+             runOnUiThread(() -> mWebView.loadUrl("javascript:loadSwitchs("+values+")"));
         }
 
         @JavascriptInterface
         public void loadSingleprams(String name, int type) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    String  mUrl=returnSpValues(name,type);
-                    mWebView.loadUrl(mUrl);//"javascript:generateLists('item_hk','" + Keystatics.hk_visibles[SpvalueStorage.getInt("hk" + Keystatics.hkcmn[0], 1)] + "','"+Keystatics.tones[SpvalueStorage.getInt("hk"+Keystatics.hkcmn[1], 0)]+"',0)");
-                }
+            runOnUiThread(() -> {
+                String  mUrl=returnSpValues(name,type);
+                mWebView.loadUrl(mUrl);
             });
         }
 
@@ -116,15 +89,8 @@ public class SettingActivity extends ActcomWeb {
     }
 
     public void loadJSfunction(String tag, String selectedValue) {
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mWebView.loadUrl("javascript:updateSingleValue('" + tag + "','" + selectedValue + "')");
-            }
-        });
+        runOnUiThread(() -> mWebView.loadUrl("javascript:updateSingleValue('" + tag + "','" + selectedValue + "')"));
     }
-
 
     public String returnSpValues(String name,int type) {
         SpvalueStorage.getInstance(SettingActivity.this);
@@ -141,7 +107,7 @@ public class SettingActivity extends ActcomWeb {
             case "item_cmn":
                 tag="cmn";
                 _visi = Keystatics.cmn_visibles[SpvalueStorage.getInt(tag + Keystatics.hkcmn[0], 1)];
-                if(_visi=="汉语拼音") _tone = Keystatics.special_tones[SpvalueStorage.getInt(tag+Keystatics.hkcmn[1], 0)];
+                  if(_visi.equals("汉语拼音")) _tone = Keystatics.special_tones[SpvalueStorage.getInt(tag+Keystatics.hkcmn[1], 0)];
                 else{
                     int _t=SpvalueStorage.getInt(tag+Keystatics.hkcmn[1], 0);
                     if(_t==3) _t=2;
@@ -187,15 +153,12 @@ public class SettingActivity extends ActcomWeb {
             return restr;
         }
 
-
-        public  String  autoloadSwics(){
-            SpvalueStorage.getInstance(SettingActivity.this);
-            int isOffline=SpvalueStorage.getInt(Keystatics.keys[0],0);
-            int isTabs=SpvalueStorage.getInt(Keystatics.keys[1], 1);
-            //int night=SpvalueStorage.getInt(Keystatics.keys[2],0 );
-            return isOffline+","+isTabs+",";//+night;
-        }
-
+    public  String  autoloadSwics(){
+        SpvalueStorage.getInstance(SettingActivity.this);
+        int isOffline=SpvalueStorage.getInt(Keystatics.keys[0],0);
+        int isTabs=SpvalueStorage.getInt(Keystatics.keys[1], 1);
+        return isOffline+","+isTabs+",";
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

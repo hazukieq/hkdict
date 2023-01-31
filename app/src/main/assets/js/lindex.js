@@ -100,7 +100,7 @@ function categoryLayout(willVisibleView){
                  </li>`;
 
          //当有额外需求时可在此载入数据；默认为嘉应客语；
-        willVisibleView.innerHTML=dropdown_template_("查询条件","detailhakkas","jetd_gajin_hk","粤东嘉应客语",lis)
+        willVisibleView.innerHTML=dropdown_template_("查询条件","detailhakkas","jetd_gajin_hk","粤东嘉应",lis)
         AsyncCategories()
 }
 
@@ -342,6 +342,7 @@ function card_tepmplate_(type,reloadTag,reloadTagUrl,body_code){
                 return card_skeleton_two;
         }
 }
+
 
 //加载完成前展示骨架屏幕；加载失败时也时如此；
 function returnSkeleton(mode,url){

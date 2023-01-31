@@ -34,7 +34,8 @@
                 app:tabBackground="@null"
                 android:paddingBottom="8dp"
                 app:tabIndicator="@null"
-                app:tabRippleColor="@null"/>
+                app:tabRippleColor="@null"
+                android:visibility="gone"/>
         </com.qmuiteam.qmui.layout.QMUIFrameLayout>
     </RelativeLayout>
 

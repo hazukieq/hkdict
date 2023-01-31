@@ -45,131 +45,112 @@ import java.util.Map;
  * create an instance of this fragment.
  */
 public class searchFrag extends UniversalWebView {
-    private static String host_url="http://dict.hazukieq.top/searchapis/returnhz";
-    private static String local_url="hkapp://search_/";
-    private static String local_reload="hkapp://reload_/";
-    private static String offline_url="hkoffline://search_/?s=";
-    private List<Hkhan_model> alls=new ArrayList<>();
+    private static final String host_url="http://dict.hazukieq.top/searchapis/returnhz";
+    private static final String local_url="hkapp://search_/";
+    private static final String local_reload="hkapp://reload_/";
+    private static final String offline_url="hkoffline://search_/?s=";
+    private final List<Hkhan_model> alls=new ArrayList<>();
+
+    public searchFrag(String openurl){
+        open_url=openurl;
+    }
 
 
-        public searchFrag(String openurl){
-            open_url=openurl;
+    @Override
+    protected void configWebView(CnWebView webView) {
+        super.configWebView(webView);
+        webView.addJavascriptInterface(new BtnClick(getActivity()), "app");
+    }
+
+
+    public class BtnClick{
+        MainActivity activity=(MainActivity)getActivity();
+
+        public BtnClick(Context context){
+
+        }
+
+        @JavascriptInterface
+        public void openDrawer() {
+            activity.showDrawer();
+        }
+
+        @JavascriptInterface
+        public void info(String str){
+            Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+        }
+
+        @JavascriptInterface
+        public void copyAll(String str){
+            ClipboardManager cm=(ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData mClipDta=ClipData.newPlainText("Pinhanzs",str);
+            cm.setPrimaryClip(mClipDta);
+            Toast.makeText(getActivity(), "复制成功！", Toast.LENGTH_SHORT).show();
         }
 
 
-        @Override
-        protected void configWebView(CnWebView webView) {
-            super.configWebView(webView);
-            webView.addJavascriptInterface(new BtnClick(getActivity()), "app");
+        @JavascriptInterface
+        public String requestHkcategories(){
+            String jsons="";
+            Gson gson=new Gson();
+            try{
+                jsons=new FileUtil(getActivity()).readFs("hkcategories");
+                if(jsons.length()>2){
+                    Hkcategories hk=Hkcategories.transfer2Hk(jsons);
+                    jsons=gson.toJson(hk);
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+            return jsons;
         }
 
 
-        public class BtnClick{
-            MainActivity activity=(MainActivity)getActivity();
+        @JavascriptInterface
+        public void OfAjax(String url){
+            Gson gson=new Gson();
+            Hkdatabase hkdatabase= Hkdatabase.getInstance(getActivity());
 
-            public BtnClick(Context context){
-
-            }
-
-            @JavascriptInterface
-            public void openDrawer() {
-                activity.showDrawer();
-            }
-
-            @JavascriptInterface
-            public void info(String str){
-                Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
-            }
-
-            @JavascriptInterface
-            public void copyAll(String str){
-                ClipboardManager cm=(ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData mClipDta=ClipData.newPlainText("Pinhanzs",str);
-                cm.setPrimaryClip(mClipDta);
-                Toast.makeText(getActivity(), "复制成功！", Toast.LENGTH_SHORT).show();
-            }
-
-
-            @JavascriptInterface
-            public String requestHkcategories(){
-                String jsons="";
-                Gson gson=new Gson();
-                try{
-                    jsons=new FileUtil(getActivity()).readFs("hkcategories");
-                    if(jsons.length()>2){
-                        Hkcategories hk=Hkcategories.transfer2Hk(jsons);
-                        jsons=gson.toJson(hk);
+            if(url.startsWith("hkoffline/search_hz_")){
+                String[] urlq=url.replace("hkoffline/search_hz_","").split(",");
+                String anz=urlq[0];
+                if(urlq[0].equals("kull")|urlq[0].contains(" ")) anz="一";
+                new QueryHanzTask(hkdatabase, datas -> {
+                    if(datas.size()==0){
+                        datas.add(0,new Hkhan_model(0,"...","","","","","",""));
                     }
-                }catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return jsons;
-            }
 
-
-            @JavascriptInterface
-            public void OfAjax(String url){
-                Gson gson=new Gson();
-                Hkdatabase hkdatabase= Hkdatabase.getInstance(getActivity());
-
-                if(url.startsWith("hkoffline/search_hz_")){
-                    String[] urlq=url.replace("hkoffline/search_hz_","").split(",");
-                    String anz=urlq[0];
-                    if(urlq[0].equals("kull")|urlq[0].contains(" ")) anz="一";
-                    new QueryHanzTask(hkdatabase, new DatabaseObserver() {
-                        @Override
-                        public void callbackOfMsg(List<Hkhan_model> datas) {
-                            if(datas.size()==0){
-                                datas.add(0,new Hkhan_model(0,"...","","","","","",""));
-                            }
-
-                            Hkhan_model model=(Hkhan_model) datas.get(0);
-                            EarchHz earchHz=new EarchHz(model.hz, model.bh,model.cmn_p,model.ps,"0");
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mWebView.loadUrl("javascript:controlResultLayout("+gson.toJson(earchHz)+")");
-                                }
-                            });
-                        }
-                    }, anz).execute();
-
-                }
-
-                else{
-                    String[] urlq=url.replace("hkoffline/search_pin_","").split(",");
-                    String anz=urlq[0];
-                    if(urlq[0].equals("kull")|urlq[0].contains(" ")) anz="li";
-                    int QUERY_MODE=0;
-                    if(urlq[1].equals("cmnp"))QUERY_MODE=1;
-                    //Log.i("onRaw_QUERY_MODE>>",""+QUERY_MODE);
-                    new QueryPinTask(hkdatabase, anz,QUERY_MODE, new DatabasePinObserver() {
-                        @Override
-                        public void callOfMsg(String searchValue,Map<String, String> maps) {
-
-                            List<Pins> cmnPins=FilterUtil.filterCmnPins(searchValue,maps);
-                            Log.i("onRaw_cmnPins>>",""+cmnPins.size());
-
-                            EarchPin earchPin=new EarchPin("1",searchValue,cmnPins);
-                            String earchPin_jsons=gson.toJson(earchPin);
-                            Log.i("jsons-->",earchPin_jsons);
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mWebView.loadUrl("javascript:controlResultLayout("+earchPin_jsons+")");
-                                }
-                            });
-                        }
-                    }).execute();
-                }
+                    Hkhan_model model=(Hkhan_model) datas.get(0);
+                    EarchHz earchHz=new EarchHz(model.hz, model.bh,model.cmn_p,model.ps,"0");
+                    getActivity().runOnUiThread(() -> mWebView.loadUrl("javascript:controlResultLayout("+gson.toJson(earchHz)+")"));
+                }, anz).execute();
 
             }
+            else{
+                String[] urlq=url.replace("hkoffline/search_pin_","").split(",");
+                String anz=urlq[0];
+                if(urlq[0].equals("kull")|urlq[0].contains(" ")) anz="li";
+                int QUERY_MODE=0;
+                if(urlq[1].equals("cmnp"))QUERY_MODE=1;
 
-            @JavascriptInterface
-            public void openSetting(){
-                SettingActivity.startActivityWithLoadUrl(getActivity(),SettingActivity.class,"file:///android_asset/setting.html","应用设置","");
+                new QueryPinTask(hkdatabase, anz,QUERY_MODE, (searchValue, maps) -> {
+                    List<Pins> cmnPins=FilterUtil.filterCmnPins(searchValue,maps);
+                    Log.i("onRaw_cmnPins>>",""+cmnPins.size());
+
+                    EarchPin earchPin=new EarchPin("1",searchValue,cmnPins);
+                    String earchPin_jsons=gson.toJson(earchPin);
+                    Log.i("jsons-->",earchPin_jsons);
+                    getActivity().runOnUiThread(() -> mWebView.loadUrl("javascript:controlResultLayout("+earchPin_jsons+")"));
+                }).execute();
             }
+
         }
+
+        @JavascriptInterface
+        public void openSetting(){
+            SettingActivity.startActivityWithLoadUrl(getActivity(),SettingActivity.class,"file:///android_asset/setting.html","应用设置","");
+        }
+    }
 
     @Override
     protected WebViewClient getWebViewClient() {
@@ -185,58 +166,51 @@ public class searchFrag extends UniversalWebView {
 
                 //SpvalueStorage.getInstance(getActivity());
                 //这里对APP本地url进行拦截，并通过修改原始数据并重新生成url链接来向服务器发送请求；规定协议为hkapp://;
-                 if(url.startsWith(local_url)){
-                    String sid=url.replace(local_url,host_url);//+"lindex.html");
+                if(url.startsWith(local_url)){
+                    String sid=url.replace(local_url,host_url);
                     String Localurl="file:///android_asset/lindex_results.html";
 
-                   // if(SpvalueStorage.getInt("currentTheme",0)==1) Localurl="file:///android_asset/nights/lindex_results.html";
                     HanzdetailActivity.startActivityWithLoadUrl(getActivity(),HanzdetailActivity.class,Localurl,"详细信息",sid);
 
                     return true;
                 }
-                 else if(url.startsWith(offline_url)){
-                     String murl=url.replace(offline_url,"");
-                     String Localmurl="file:///android_asset/offline/lindex_results_offline.html";
-                     HanzdetailActivity.startActivityWithLoadUrl(getActivity(),HanzdetailActivity.class,Localmurl,"详细信息",murl);
+                else if(url.startsWith(offline_url)){
+                    String murl=url.replace(offline_url,"");
+                    String Localmurl="file:///android_asset/offline/lindex_results_offline.html";
+                    HanzdetailActivity.startActivityWithLoadUrl(getActivity(),HanzdetailActivity.class,Localmurl,"详细信息",murl);
 
-                     return true;
-                 }
+                    return true;
+                }
 
-                 else if(url.startsWith(local_reload)){
+                else if(url.startsWith(local_reload)){
+                    String si=url.replace(local_reload,"");
 
-                     String si=url.replace(local_reload,"");
-
-                     getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mWebView.loadUrl("javascript:AsyncJSON('"+si+"')");
-                        }
-                    });
+                    getActivity().runOnUiThread(() -> mWebView.loadUrl("javascript:AsyncJSON('"+si+"')"));
                     return true;
                 }
                 return false;
             }
         };
-}
+    }
 
 
 
-public void CheckIsOffline(){
-    getActivity().runOnUiThread(() -> {
-        int isOffline=sp.getInt(Keystatics.keys[0], 0);
-        int currentWeb=sp.getInt("searchWeb",0);
-        String search_url="file:///android_asset/lindex.html";
-        if(isOffline==1){
-            search_url="file:///android_asset/offline/lindex_offline.html";
-        }
+    public void CheckIsOffline(){
+        getActivity().runOnUiThread(() -> {
+            int isOffline=sp.getInt(Keystatics.keys[0], 0);
+            int currentWeb=sp.getInt("searchWeb",0);
+            String search_url="file:///android_asset/lindex.html";
+            if(isOffline==1){
+                search_url="file:///android_asset/offline/lindex_offline.html";
+            }
 
-        if(isOffline!=currentWeb){
-            editor.putInt("searchWeb",isOffline);
-            editor.commit();
-            mWebView.loadUrl(search_url);
-        }
-    });
-}
+            if(isOffline!=currentWeb){
+                editor.putInt("searchWeb",isOffline);
+                editor.commit();
+                mWebView.loadUrl(search_url);
+            }
+        });
+    }
 
     @Override
     public void onResume() {

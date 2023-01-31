@@ -1,6 +1,7 @@
 package com.hazukie.testakka.base;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -32,7 +33,6 @@ public class ActcomWeb extends BaseActivity {
 
     private FrameLayout web_frame;
     private QMUITopBarLayout topBarLayout;
-    private ProgressBar mProgressBar;
     protected CnWebView mWebView;
 
     private final static int PRORESS_PROGRESS = 0;
@@ -58,7 +58,7 @@ public class ActcomWeb extends BaseActivity {
         getArguments();
         if (open_url != null && open_url.length() > 0) handleUrl(open_url);
 
-        mProgressBar = findViewById(R.id.web_progress);
+        ProgressBar mProgressBar = findViewById(R.id.web_progress);
         mProgressHandler = new ProgressHandler(mProgressBar);
         initWebView();
     }
@@ -96,7 +96,7 @@ public class ActcomWeb extends BaseActivity {
      * @param title 网页标题
      * @param appendParam 附加参数
      */
-    public static void startActivityWithLoadUrl(Context context,Class secondeClass, String url,String title,String appendParam) {
+    public static void startActivityWithLoadUrl(Context context,Class<?> secondeClass, String url,String title,String appendParam) {
         Intent intent = new Intent(context, secondeClass);
         intent.putExtra("url", url);
         intent.putExtra("title",title);
@@ -180,7 +180,7 @@ public class ActcomWeb extends BaseActivity {
     }
 
     public static class ActcomwebChromeClient extends WebChromeClient {
-        private ActcomWeb mActivity;
+        private final ActcomWeb mActivity;
 
         public ActcomwebChromeClient(ActcomWeb activity) {
             mActivity = activity;
@@ -236,6 +236,7 @@ public class ActcomWeb extends BaseActivity {
     }
 
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onResume() {
         mWebView.getSettings().setJavaScriptEnabled(true);

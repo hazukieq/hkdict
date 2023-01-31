@@ -11,14 +11,16 @@ public class Dialogsheet {
 
     private Dialogsheet instance;
     private Context context;
-    public Dialogsheet(Context getContext){
+    private ClickCallback clickCallback;
+    public Dialogsheet(Context getContext,ClickCallback clickCallback){
         this.context=getContext;
+        this.clickCallback=clickCallback;
     }
 
 
     public Dialogsheet getInstance(Context context) {
         if(instance==null){
-            instance=new Dialogsheet(context);
+            instance=new Dialogsheet(context,clickCallback);
         }
         return instance;
     }
@@ -31,12 +33,9 @@ public class Dialogsheet {
                 .setAllowDrag(true)
                 .setNeedRightMark(isNeedMark)
                 .setGravityCenter(true)
-                .setOnSheetItemClickListener(new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
-                    @Override
-                    public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
-                        controlClick(position,appendTag,items[position]);
-                        dialog.dismiss();
-                    }
+                .setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
+                    clickCallback.controlClick(position,appendTag,items[position]);
+                    dialog.dismiss();
                 });
 
         for(int i=0;i<items.length;i++){
@@ -47,7 +46,9 @@ public class Dialogsheet {
 
     }
 
-    public void controlClick(int position,String tag,String selectedValue){
+    public interface ClickCallback {
+        void controlClick(int position, String tag, String selectedValue);
 
     }
+
 }

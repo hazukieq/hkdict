@@ -238,12 +238,12 @@ function returnPager(sound){
     var pins=sound.hkpins
     var source=sound.source
     var tones_=sound.tones
-    
-    source_ext=""
+   // var first_tone=tones.split(",")[0].replace(/^(\d)(.),?/,'<br/><b>第1声$2</b>')
+    source_ext=""//+first_tone
     for(var t=0;t<names.length;t++){
         //<li><font color="#d63384;"></font></li>
-        var tource_=tones_[t].replace(/^\d/,'第1声 ')
-        var ource_=tource_.replace(/,(\d)/g,'<br/>第$1声 ');
+        var tource_=tones_[t].replace(/^\d/,'<b>第1声</b>')
+        var ource_=tource_.replace(/,(\d)/g,'<br/><b>第$1声</b>');
         source_ext+=`${names[t]}：<font color="#d63384">${source[t].replace('来源：','')}</font><br/><font color="#495050">声调</font><br/><small>${ource_}</small><br/><br/>`
    }
    
@@ -278,25 +278,6 @@ function CheckSource(){
 }
 
 //客家话读音请求
-function requesthakkas(){
-    
-    var pager_root=$et('pagers')
-    var hz=$et('bighz').innerText;
-
-    var type=app.returnHk_type()
-    var toney=app.returnHk_toney()
-    var request_url=`http://dict.hazukieq.top/searchapis/getpins?value=${hz}&hkarea=jetd&type=${type}&toney=${toney}`;//'http://dict.hazukieq.top/lindex/getpins?value='+hz+'&hkarea=jetd&type='+type+'&toney='+toney;
-
-    sendAjax(request_url,2000,
-        (text)=>{
-            var jsons=JSON.parse(text)
-            pager_root.innerHTML=returnPager(jsons)
-        },
-        ()=>{
-            pager_root.innerHTML='<li class="list-group normalText border-0 p-0 m-0"><p class="p-3">加载失败<br/><a class="btn btn-primary mt-2" onclick="changeSoundVisible(0)">请重试</a><p></li>'
-        });
-}
-
 //读音显示格式切换请求API，通过请求服务器以获得转换后的数据，并重新加载
 function changeSoundVisible(area_codes){
     var pager_root=$et('pagers')
@@ -304,8 +285,8 @@ function changeSoundVisible(area_codes){
     var hanzs_code=['jetd','jets','jetz','jetb','gongs','hoin','cont','gongx','fukg','toiv','hoing','kit']
     var type=app.returnHk_type()
     var toney=app.returnHk_toney()
-    var area_code=''
-    switch(area_codes){
+    var area_code=hanzs_code[area_codes]
+    /*switch(area_codes){
         case 0:
         case 1:
         case 3:
@@ -319,7 +300,7 @@ function changeSoundVisible(area_codes){
             area_code='';
             break;
 
-    }
+    }*/
 
     var sounds_root=$et('areas')
     var allsounds=$tag(sounds_root,'a')
@@ -415,7 +396,7 @@ function AsyncJSON(url){
             var joss=JSON.parse(text);
             //生成具体客家话读音布局
             mergeCardLayout(joss);
-            requesthakkas();
+            changeSoundVisible(0);
         },
         ()=>{
             setTimeout(function(){

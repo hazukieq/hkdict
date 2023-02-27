@@ -3,44 +3,40 @@ package com.hazukie.testakka.base;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.hazukie.testakka.R;
-import com.qmuiteam.qmui.util.QMUIDisplayHelper;
-import com.qmuiteam.qmui.util.QMUIPackageHelper;
-
-import java.io.File;
 
 public class CnWebView extends WebView {
 
     public CnWebView(Context context) {
         this(context, null);
-        init(context);
+        init();
     }
 
     public CnWebView(Context context, AttributeSet attrs) {
         this(context, attrs, android.R.attr.webViewStyle);
-        init(context);
+        init();
     }
 
     public CnWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        init();
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    protected void init(Context context) {
+    protected void init() {
         setBackgroundColor(Color.TRANSPARENT);
         setBackgroundResource(R.color.white);
 
         //隐藏滚动条
         setVerticalScrollBarEnabled(false);
         setHorizontalScrollBarEnabled(false);
-        setOverScrollMode(View.OVER_SCROLL_NEVER);//取消WebView中混动或拖动到顶部、底部时的阴影
+        //取消WebView中混动或拖动到顶部、底部时的阴影
+        setOverScrollMode(View.OVER_SCROLL_NEVER);
         setNestedScrollingEnabled(false);//
 
         WebSettings webSettings = getSettings();
@@ -71,7 +67,7 @@ public class CnWebView extends WebView {
         webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
 
         //set web cache strategy
-        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
 
         //启动硬件加速

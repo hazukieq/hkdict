@@ -1,6 +1,5 @@
 window.onload=card_skeleton(0,'');
 callLoad();
-//callServer('http://43.142.122.229/lindex.html?s=一')
 
 
 //通知APP加载数据
@@ -80,10 +79,10 @@ function card_skeleton(mode,reloadTag){
 
     var alls=['说文解字','康熙字典','汉语字典','切韵']
     var alls_c=['sw','kx','hd','ltc']
-    var accordions=''
     for(var i=0;i<4;i++){
         var all=alls[i]
         var all_c=alls_c[i]
+        var accordions=""
         var accordio=
             `<div class="accordion mt-2">
                 <div class="accordion">
@@ -95,14 +94,14 @@ function card_skeleton(mode,reloadTag){
             </div>`
             accordions+=accordio
     }
+
     var normal_skeleton_footer=
             `<div class="row m-2">
-                <div class="col p-0">
-                ${accordions}
-                </div>
+                <div class="col p-0">${accordions}</div>
             </div>`;
 
     var normal_skeleton=card_tepmplate_(0,'数据加载中...','')+normal_skeleton_footer
+
     var skeleton_failed=`
             <div class="card m-2 border-0">
                 <div class="card-header m-2 ">
@@ -202,7 +201,7 @@ function generateCard(sjo){
 //生成各地客家话读音分布布局代码
 function allHakkaspagers(){
     var alis=generateTab();
-    var pagerTab=`<div class="row g-0">
+    var pagerTab=`<div class="row g-0 ">
                     <div class="col-4">
                         <div class="list-group p-0" id="areas">${alis}</div>
                     </div>
@@ -217,9 +216,7 @@ function allHakkaspagers(){
 function generateTab(){
     var alis=''
     var hanzs=['粤东','粤西','粤珠','粤北','广西','海南','川湘','江西','福建','台湾','海外','其他']
-    //var hanzs_code=['jetd','jets','jetz','jetb','guongs','hoin','gongs','fukg','hoing','kit']
     for(var s=0;s<hanzs.length;s++){
-        //onclick="changeSoundVisible()"
         if(s==0) var alist='<a class="list-group-item border-start-0 border-top-0 border-bottom-0 rounded-0 text-center m-0 active" onclick="changeSoundVisible('+s+')">'+hanzs[s]+'</a>'
         else var alist='<a class="list-group-item border-start-0 border-top-0 border-bottom-0 rounded-0 text-center m-0" onclick="changeSoundVisible('+s+')">'+hanzs[s]+'</a>'
         alis+=alist;
@@ -233,18 +230,17 @@ function generateTab(){
 //sound为json模型，包含detailHakka和sou
 var source_ext=""
 function returnPager(sound){
-    //console.log(sound)
     var names=sound.hknames;
     var pins=sound.hkpins
     var source=sound.source
     var tones_=sound.tones
-   // var first_tone=tones.split(",")[0].replace(/^(\d)(.),?/,'<br/><b>第1声$2</b>')
-    source_ext=""//+first_tone
+
+    source_ext=""
     for(var t=0;t<names.length;t++){
-        //<li><font color="#d63384;"></font></li>
         var tource_=tones_[t].replace(/^\d/,'<b>第1声</b>')
         var ource_=tource_.replace(/,(\d)/g,'<br/><b>第$1声</b>');
-        source_ext+=`${names[t]}：<font color="#d63384">${source[t].replace('来源：','')}</font><br/><font color="#495050">声调</font><br/><small>${ource_}</small><br/><br/>`
+        var name=names[t].replace("客语","")
+        source_ext+=`${name}：<font color="#d63384">${source[t]==0?"":source[t].replace('来源：','')}</font><br/><font color="#495050">${source[t].length==0?"":"声调"}</font><br/><small>${ource_}</small><br/><br/>`
    }
    
     var contents='';
@@ -256,7 +252,7 @@ function returnPager(sound){
             contents+=`
                     <li class="list-group-item normalText border-0 p-0">
                         <h6>
-                            ${names[f]}
+                            ${names[f].replace("客语","")}
                         </h6>
                         <p class="aslin p-0 m-0" style="letter-spacing:0.6px;">${pins[f]}<p/>
                     </li>`
@@ -273,7 +269,6 @@ function returnPager(sound){
 }
 
 function CheckSource(){
-    //console.log("checkSource_ls:"+source_ext)
     app.showsource(source_ext)
 }
 
@@ -282,52 +277,37 @@ function CheckSource(){
 function changeSoundVisible(area_codes){
     var pager_root=$et('pagers')
     var hz=$et('bighz').innerText;
+
     var hanzs_code=['jetd','jets','jetz','jetb','gongs','hoin','cont','gongx','fukg','toiv','hoing','kit']
     var type=app.returnHk_type()
     var toney=app.returnHk_toney()
     var area_code=hanzs_code[area_codes]
-    /*switch(area_codes){
-        case 0:
-        case 1:
-        case 3:
-        case 4:
-        case 7:
-        case 8:
-        case 10:
-            area_code=hanzs_code[area_codes];
-            break;
-        default:
-            area_code='';
-            break;
-
-    }*/
 
     var sounds_root=$et('areas')
     var allsounds=$tag(sounds_root,'a')
+
     //遍历所有<li>标签以获得所有的读音数据
     for(var t=0;t<allsounds.length;t++){
         allsounds[t].classList.remove('active')
     }
     allsounds[area_codes].classList.add('active')
-
     pager_root.innerHTML='<li class="list-group border-0 normalText"><p class="p-3">数据加载中...<p></li>'
 
-
     //请求API，通过请求参数来请求不同的显示数据
-    var api_request=`http://dict.hazukieq.top/searchapis/getpins?value=${hz}&hkarea=${area_code}&type=${type}&toney=${toney}`;//'http://dict.hazukieq.top/lindex/getpins?value='+hz+'&hkarea='+area_code+'&type='+type+'&toney='+toney;
+    var api_request=`http://dict.hazukieq.top/searchapis/getpins?value=${hz}&hkarea=${area_code}&type=${type}&toney=${toney}`;
+    //'http://dict.hazukieq.top/lindex/getpins?value='+hz+'&hkarea='+area_code+'&type='+type+'&toney='+toney;
 
     if(area_code!=''){
         sendAjax(api_request,2000,
             (text)=>{
                 var jsons=JSON.parse(text)
-                //console.log(jsons.hkpins)
                 pager_root.innerHTML=returnPager(jsons)
             },
             ()=>{
                 pager_root.innerHTML='<li class="list-group normalText border-0 p-0 m-0"><p class="p-3">加载失败<br/><a class="btn btn-primary mt-2" onclick="changeSoundVisible('+area_codes+')">请重试</a><p></li>'
             })
     }else{
-        pager_root.innerHTML='<li class="list-group-item normalText border-0 p-0 m-0"><h6 class="p-3">内容为空...<br/>管理员太懒了orz<h5/></li>'
+        pager_root.innerHTML='<li class="list-group-item normalText border-0 p-0 m-0"><h6 class="p-3">内容为空...<br/><br/>管理员太懒了orz<h5/></li>'
     }
     
 }
@@ -383,7 +363,6 @@ function generateLists(list_id,list_name,content,mode,vertext,ft,lt,lhw,bg){
 
 //请求服务器发送数据，并进行解析返回生成布局
 function callServer(url){
-    //console.log("已经启动....");
     AsyncJSON(url);
 }
 

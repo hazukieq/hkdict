@@ -14,7 +14,8 @@
         android:layout_height="match_parent">
         <com.qmuiteam.qmui.layout.QMUIFrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/neogray_bg">
             <com.hazukie.testakka.base.QViewpager2
                 android:id="@+id/main_app_pagers"
                 android:background="?attr/theme_pager_bg_color"
@@ -61,15 +62,6 @@
             android:id="@+id/main_menu_title"
             android:layout_below="@id/stopView"
             android:background="?attr/theme_headline_bg_color"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:textColor="@color/text_gray"
-            android:textSize="16sp"
-            android:id="@+id/app_setting"
-            android:background="@color/white"
-            android:text="应用设置"
-            android:layout_below="@id/main_menu_title"/>
 
         <Button
             android:layout_width="match_parent"
@@ -78,10 +70,29 @@
             android:textSize="16sp"
             android:id="@+id/app_hkintroduce"
             android:background="@color/white"
-            android:text="通用客拼方案详解"
-            android:layout_below="@id/app_setting"/>
+            android:text="客拼详解"
+            android:layout_below="@id/main_menu_title"/>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textColor="@color/text_gray"
+            android:textSize="16sp"
+            android:id="@+id/app_extensions"
+            android:background="@color/white"
+            android:text="更多拓展"
+            android:layout_below="@id/app_hkintroduce"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textColor="@color/text_gray"
+            android:textSize="16sp"
+            android:id="@+id/app_setting"
+            android:background="@color/white"
+            android:text="应用设置"
+            android:layout_below="@id/app_extensions"/>
+        <!--androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -90,6 +101,6 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_below="@id/app_hkintroduce"
             android:id="@+id/main_menu_title_recy"
-            android:background="?attr/theme_recyclerview_bg_color"/>
+            android:background="?attr/theme_recyclerview_bg_color"/-->
     </RelativeLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -57,14 +57,20 @@ public class MainActivity extends BaseActivity {
         tabs= findViewById(R.id.main_app_tabs);
         Button app_settings = findViewById(R.id.app_setting);
         Button app_hkintroduce = findViewById(R.id.app_hkintroduce);
-
+        Button app_extensions= findViewById(R.id.app_extensions);
         app_hkintroduce
                 .setOnClickListener(v -> DialectDetailActivity
                         .startActivityWithLoadUrl(MainActivity.this  ,
                                 DialectDetailActivity.class,
-                                "https://blog.hazukieq.top/html/unihk_introduce.html","通用客家话拼音方案",
+                                "https://www.hazukieq.top/html/unihk_introduce.html","通用客家话拼音方案",
                                 "file:///android_asset/dialect.html"));
 
+        app_extensions
+                .setOnClickListener(v -> DialectDetailActivity
+                        .startActivityWithLoadUrl(MainActivity.this  ,
+                                DialectDetailActivity.class,
+                                "https://www.hazukieq.top/hkpages/index.html","通用客家话拼音方案",
+                                "file:///android_asset/dialect.html"));
 
         app_settings.setOnClickListener(v -> SettingActivity
                 .startActivityWithLoadUrl(MainActivity.this,

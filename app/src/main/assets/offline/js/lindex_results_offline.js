@@ -193,7 +193,7 @@ function allHakkaspagers(sound){
              `<div class="list-group-item normalText border-0 p-0 m-0"><a onclick="CheckSource()" class="float-end">数据来源&nbsp;</a>
               </div>
               <div class="list-group-item normalText border-0 p-0 m-0">
-                粤东嘉应客语：<span class="aslin p-0 m-0" style="letter-spacing:0.6px;">${pin}<span/>
+                粤东嘉应：<span class="aslin p-0 m-0" style="letter-spacing:0.6px;">${pin}<span/>
               </div>`
     }else{
         pagerTab=`
@@ -209,12 +209,25 @@ function allHakkaspagers(sound){
 
 
 function CheckSource(){
-    var source_ext=`嘉应客语：<font color="#d63384">1926年客法字典</font>
+    var source_ext=`
+        嘉应客语：<font color="#d63384">1926年客法字典</font>
                     <br/>
                     <font color="#495050">声调</font>
+                    <small>
                     <br/>
-                    <small>① 44 阴平，② 11 阳平，③ 31 上声，⑤ 52 去声，➆ 1 阴入，⑧ 5 阳入</small>
-                    <br/><br/>`
+                    <b>第1声</b>&nbsp;44&nbsp;阴平
+                    <br/>
+                    <b>第2声</b>&nbsp;11&nbsp;阳平
+                    <br/>
+                    <b>第3声</b>&nbsp;31&nbsp;上声
+                    <br/>
+                    <b>第5声</b>&nbsp;52&nbsp;去声
+                    <br/>
+                    <b>第7声</b>&nbsp;1&nbsp;阴入
+                    <br/>
+                    <b>第8声</b>&nbsp;5&nbsp;阳入
+                    <br/><br/>
+                    </small>`
     app.showsource(source_ext)
 }
 

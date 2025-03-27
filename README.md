@@ -1,2 +1,2 @@
 ## 客音方典源码
-- [下载链接](https://www.hazukieq.top/apk/dict/hkdict.apk)
+- [安装包下载链接](https://www.hazukieq.top/apk/dict/hkdict.apk)
